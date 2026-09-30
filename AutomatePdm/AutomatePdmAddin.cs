@@ -73,7 +73,8 @@ public class AutomatePdmAddin : IEdmAddIn5
 
     private void RegisterHooks(IEdmCmdMgr5 poCmdMgr)
     {
-        var hooks = this.PipeBuilder.GetHooks(this.Vault);
+        this.PipeBuilder.LoadSetup(this.Vault);
+        var hooks = this.PipeBuilder.Hooks;
         foreach (var hook in hooks)
         {
             poCmdMgr.AddHook(hook);
@@ -82,6 +83,14 @@ public class AutomatePdmAddin : IEdmAddIn5
 
     private void HandleCommands(ref EdmCmd poCmd, ref EdmCmdData[] ppoData)
     {
-        var pipe
+        var ctx = new ExecutionContext(poCmd);
+        this.PipeBuilder.HandleCommand(ref ppoData, ctx);
+        if (ctx.Cancel)
+        {
+            poCmd.mbCancel |= 1;
+        }
+
+        // todo: implement log
+        // ctx.Log.ToString();
     }
 }
