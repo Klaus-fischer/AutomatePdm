@@ -4,9 +4,8 @@
 
 namespace AutomatePdm.Services;
 
-using System.Collections.Generic;
-using System.Text;
 using EPDM.Interop.epdm;
+using System.Collections.Generic;
 
 internal class PipeBuilderService
 {
@@ -66,42 +65,9 @@ internal class PipeBuilderService
     }
 }
 
-public class ExecutionContext(EdmCmd cmd)
-{
-    public IEdmVault5 Vault { get; } = (IEdmVault5)cmd.mpoVault;
-
-    public StringBuilder Log { get; } = new StringBuilder();
-
-    public object? Extra { get; } = cmd.mpoExtra;
-
-    public bool Cancel { get; set; }
-
-    public EdmCmdType CmdType { get; } = cmd.meCmdType;
-
-    public int CmdID { get; } = cmd.mlCmdID;
-
-    public int ParentWnd { get; } = cmd.mlParentWnd;
-
-    public int CurrentFolderID { get; } = cmd.mlCurrentFolderID;
-}
-
-public interface ITrigger
-{
-    string[] ProvidedProperties { get; }
-
-    void Execute(ref EdmCmdData[] data, ExecutionContext ctx);
-
-    IPipelineStep? Next { get; set; }
-}
-
 public interface IPipelineStep
 {
-    void Execute(WorkItem item, ExecutionContext ctx);
+    void Execute(WorkItem[] item, ExecutionContext ctx);
 
     public IPipelineStep? Next { get; set; }
-}
-
-public class WorkItem
-{
-    public Dictionary<string, object> Properties { get; } = new();
 }
