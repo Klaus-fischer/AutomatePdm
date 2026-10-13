@@ -2,11 +2,9 @@
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 
-namespace AutomatePdm.Services;
+namespace AutomatePdm;
 
-using AutomatePdm.Data;
 using EPDM.Interop.epdm;
-using System.Xml.Linq;
 
 public interface ITrigger
 {

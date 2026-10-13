@@ -2,7 +2,7 @@
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 
-namespace AutomatePdm.Services;
+namespace AutomatePdm;
 
 using EPDM.Interop.epdm;
 using System.Collections.Generic;
@@ -63,11 +63,4 @@ internal class PipeBuilderService
             }
         }
     }
-}
-
-public interface IPipelineStep
-{
-    void Execute(WorkItem[] item, ExecutionContext ctx);
-
-    public IPipelineStep? Next { get; set; }
 }

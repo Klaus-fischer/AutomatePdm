@@ -2,7 +2,7 @@
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 
-namespace AutomatePdm.Services;
+namespace AutomatePdm;
 
 using System.Collections.Generic;
 using System.Text;
