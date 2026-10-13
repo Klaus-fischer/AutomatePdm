@@ -1,4 +1,4 @@
-﻿// <copyright file="PipeBuilderService.cs" company="SIM Automation">
+﻿// <copyright file="ExecutionContext.cs" company="SIM Automation">
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 
@@ -39,6 +39,12 @@ public class WorkItem(IEdmFile5 file, IEdmFolder5 folder)
     {
         var file = (IEdmFile5)vault.GetObject(EdmObjectType.EdmObject_File, fileId);
         var folder = (IEdmFolder5)vault.GetObject(EdmObjectType.EdmObject_Folder, folderId);
+        return new WorkItem(file, folder);
+    }
+
+    internal static WorkItem Create(string filePath, IEdmVault5 vault)
+    {
+        var file = vault.GetFileFromPath(filePath, out var folder);
         return new WorkItem(file, folder);
     }
 }
