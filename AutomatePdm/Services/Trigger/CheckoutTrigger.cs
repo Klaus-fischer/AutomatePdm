@@ -8,28 +8,37 @@ using EPDM.Interop.epdm;
 
 internal class PostCheckoutTrigger : TriggerBase
 {
+    /// <inheritdoc/>
     public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PostLock;
 
-    public string[] ProvidedProperties => new string[]
+    /// <inheritdoc/>
+    public override string[] ProvidedProperties => new string[]
     {
         TriggerExtensions.FileId,
         TriggerExtensions.ParentFolderId,
         TriggerExtensions.FilePath,
     };
 
-    protected override WorkItem Create(EdmCmdData data, ExecutionContext ctx)
+    /// <inheritdoc/>
+    protected override Func<EdmCmdData, int> GetFileId => d => d.mlObjectID1;
+
+    /// <inheritdoc/>
+    protected override Func<EdmCmdData, int> GetFolderId => d => d.mlObjectID2;
+
+    /// <inheritdoc/>
+    protected override void EnrichProperties(EdmCmdData data, WorkItem workItem, ExecutionContext ctx)
     {
-        var workItem = WorkItem.Create(data.mlObjectID1, data.mlObjectID2, ctx.Vault);
         workItem.Properties.Add(TriggerExtensions.FileId, data.mlObjectID1);
         workItem.Properties.Add(TriggerExtensions.ParentFolderId, data.mlObjectID2);
         workItem.Properties.Add(TriggerExtensions.FilePath, data.mbsStrData1);
-        return workItem;
     }
 }
 
 internal class PreviewCheckoutTrigger : PostCheckoutTrigger, IPreEventTrigger
 {
+    /// <inheritdoc/>
     public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PreLock;
 
+    /// <inheritdoc/>
     public bool Cancel { get; set; }
 }

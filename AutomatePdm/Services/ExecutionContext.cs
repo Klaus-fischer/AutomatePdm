@@ -4,7 +4,6 @@
 
 namespace AutomatePdm;
 
-using System.Collections.Generic;
 using System.Text;
 using EPDM.Interop.epdm;
 
@@ -25,26 +24,4 @@ public class ExecutionContext(EdmCmd cmd)
     public int ParentWnd { get; } = cmd.mlParentWnd;
 
     public int CurrentFolderID { get; } = cmd.mlCurrentFolderID;
-}
-
-public class WorkItem(IEdmFile5 file, IEdmFolder5 folder)
-{
-    internal IEdmFile5 File { get; } = file;
-
-    internal IEdmFolder5 Folder { get; } = folder;
-
-    public Dictionary<string, object> Properties { get; } = new();
-
-    internal static WorkItem Create(int fileId, int folderId, IEdmVault5 vault)
-    {
-        var file = (IEdmFile5)vault.GetObject(EdmObjectType.EdmObject_File, fileId);
-        var folder = (IEdmFolder5)vault.GetObject(EdmObjectType.EdmObject_Folder, folderId);
-        return new WorkItem(file, folder);
-    }
-
-    internal static WorkItem Create(string filePath, IEdmVault5 vault)
-    {
-        var file = vault.GetFileFromPath(filePath, out var folder);
-        return new WorkItem(file, folder);
-    }
 }

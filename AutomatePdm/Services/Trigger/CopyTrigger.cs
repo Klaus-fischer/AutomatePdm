@@ -8,54 +8,66 @@ using EPDM.Interop.epdm;
 
 internal class PostCopyTrigger : TriggerBase
 {
+    /// <inheritdoc/>
     public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PostAdd;
 
-    public string[] ProvidedProperties => new string[]
-    {
+    /// <inheritdoc/>
+    public override string[] ProvidedProperties =>
+    [
         TriggerExtensions.DestinationFolderId,
         TriggerExtensions.FileId,
         TriggerExtensions.SourceFolderId,
         TriggerExtensions.SourceFolderPath,
         TriggerExtensions.DestinationFolderPath,
-    };
+    ];
 
-    protected override WorkItem Create(EdmCmdData data, ExecutionContext ctx)
+    /// <inheritdoc/>
+    protected override Func<EdmCmdData, int> GetFileId => d => d.mlObjectID2;
+
+    /// <inheritdoc/>
+    protected override Func<EdmCmdData, int> GetFolderId => d => d.mlObjectID3; // may also be mlObjectID1, depends on file id changed pre Copy (old file), post copy (new file)
+
+    /// <inheritdoc/>
+    protected override void EnrichProperties(EdmCmdData data, WorkItem workItem, ExecutionContext ctx)
     {
-        var workItem = WorkItem.Create(data.mbsStrData2, ctx.Vault);
-
         workItem.Properties.Add(TriggerExtensions.DestinationFolderId, data.mlObjectID1);
         workItem.Properties.Add(TriggerExtensions.FileId, data.mlObjectID2);
         workItem.Properties.Add(TriggerExtensions.SourceFolderId, data.mlObjectID3);
         workItem.Properties.Add(TriggerExtensions.SourceFolderPath, data.mbsStrData1);
         workItem.Properties.Add(TriggerExtensions.DestinationFolderPath, data.mbsStrData2);
-        return workItem;
     }
 }
 
 internal class PreviewCopyTrigger : TriggerBase, IPreEventTrigger
 {
+    /// <inheritdoc/>
     public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PreCopy;
 
-    public string[] ProvidedProperties => new string[]
-    {
+    public override string[] ProvidedProperties =>
+    [
         TriggerExtensions.DestinationFolderId,
         TriggerExtensions.FileId,
         TriggerExtensions.SourceFolderId,
         TriggerExtensions.SourceFolderPath,
         TriggerExtensions.DestinationFolderPath,
-    };
+    ];
 
-    protected override WorkItem Create(EdmCmdData data, ExecutionContext ctx)
+    /// <inheritdoc/>
+    protected override Func<EdmCmdData, int> GetFileId => d => d.mlObjectID2;
+
+    /// <inheritdoc/>
+    protected override Func<EdmCmdData, int> GetFolderId => d => d.mlObjectID3;
+
+    /// <inheritdoc/>
+    protected override void EnrichProperties(EdmCmdData data, WorkItem workItem, ExecutionContext ctx)
     {
-        var workItem = WorkItem.Create(data.mlObjectID2, data.mlObjectID3, ctx.Vault);
-
         workItem.Properties.Add(TriggerExtensions.DestinationFolderId, data.mlObjectID1);
         workItem.Properties.Add(TriggerExtensions.FileId, data.mlObjectID2);
         workItem.Properties.Add(TriggerExtensions.SourceFolderId, data.mlObjectID3);
         workItem.Properties.Add(TriggerExtensions.SourceFolderPath, data.mbsStrData1);
         workItem.Properties.Add(TriggerExtensions.DestinationFolderPath, data.mbsStrData2);
-        return workItem;
     }
 
+    /// <inheritdoc/>
     public bool Cancel { get; set; }
 }

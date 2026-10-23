@@ -5,7 +5,6 @@
 namespace AutomatePdm;
 
 using EPDM.Interop.epdm;
-
 public interface ITrigger
 {
     EdmCmdType CmdType { get; }
@@ -20,26 +19,4 @@ public interface ITrigger
 internal interface IPreEventTrigger
 {
     bool Cancel { get; set; }
-}
-
-internal abstract class TriggerBase : ITrigger
-{
-    public abstract EdmCmdType CmdType { get; }
-
-    public IPipelineStep? Next { get; set; }
-
-    public string[] ProvidedProperties { get; }
-
-    protected abstract WorkItem Create(EdmCmdData data, ExecutionContext ctx);
-
-    public void Execute(ref EdmCmdData[] data, ExecutionContext ctx)
-    {
-        WorkItem[] workItems = new WorkItem[data.Length];
-        for (int i = 0; i < data.Length; i++)
-        {
-            workItems[i] = this.Create(data[i], ctx);
-        }
-
-        this.Next?.Execute(workItems, ctx);
-    }
 }
