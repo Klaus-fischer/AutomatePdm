@@ -27,9 +27,9 @@ internal class PostCheckinTrigger : TriggerBase
     /// <inheritdoc/>
     protected override void EnrichProperties(EdmCmdData data, WorkItem workItem, ExecutionContext ctx)
     {
-        workItem.Properties.Add(TriggerExtensions.FileId, data.mlObjectID1);
-        workItem.Properties.Add(TriggerExtensions.ParentFolderId, data.mlObjectID2);
-        workItem.Properties.Add(TriggerExtensions.FilePath, data.mbsStrData1);
+        workItem.AddProperty(TriggerExtensions.FileId, data.mlObjectID1);
+        workItem.AddProperty(TriggerExtensions.ParentFolderId, data.mlObjectID2);
+        workItem.AddProperty(TriggerExtensions.FilePath, data.mbsStrData1);
     }
 }
 

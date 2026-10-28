@@ -30,11 +30,11 @@ internal class PostCopyTrigger : TriggerBase
     /// <inheritdoc/>
     protected override void EnrichProperties(EdmCmdData data, WorkItem workItem, ExecutionContext ctx)
     {
-        workItem.Properties.Add(TriggerExtensions.DestinationFolderId, data.mlObjectID1);
-        workItem.Properties.Add(TriggerExtensions.FileId, data.mlObjectID2);
-        workItem.Properties.Add(TriggerExtensions.SourceFolderId, data.mlObjectID3);
-        workItem.Properties.Add(TriggerExtensions.SourceFolderPath, data.mbsStrData1);
-        workItem.Properties.Add(TriggerExtensions.DestinationFolderPath, data.mbsStrData2);
+        workItem.AddProperty(TriggerExtensions.DestinationFolderId, data.mlObjectID1);
+        workItem.AddProperty(TriggerExtensions.FileId, data.mlObjectID2);
+        workItem.AddProperty(TriggerExtensions.SourceFolderId, data.mlObjectID3);
+        workItem.AddProperty(TriggerExtensions.SourceFolderPath, data.mbsStrData1);
+        workItem.AddProperty(TriggerExtensions.DestinationFolderPath, data.mbsStrData2);
     }
 }
 
@@ -61,11 +61,11 @@ internal class PreviewCopyTrigger : TriggerBase, IPreEventTrigger
     /// <inheritdoc/>
     protected override void EnrichProperties(EdmCmdData data, WorkItem workItem, ExecutionContext ctx)
     {
-        workItem.Properties.Add(TriggerExtensions.DestinationFolderId, data.mlObjectID1);
-        workItem.Properties.Add(TriggerExtensions.FileId, data.mlObjectID2);
-        workItem.Properties.Add(TriggerExtensions.SourceFolderId, data.mlObjectID3);
-        workItem.Properties.Add(TriggerExtensions.SourceFolderPath, data.mbsStrData1);
-        workItem.Properties.Add(TriggerExtensions.DestinationFolderPath, data.mbsStrData2);
+        workItem.AddProperty(TriggerExtensions.DestinationFolderId, data.mlObjectID1);
+        workItem.AddProperty(TriggerExtensions.FileId, data.mlObjectID2);
+        workItem.AddProperty(TriggerExtensions.SourceFolderId, data.mlObjectID3);
+        workItem.AddProperty(TriggerExtensions.SourceFolderPath, data.mbsStrData1);
+        workItem.AddProperty(TriggerExtensions.DestinationFolderPath, data.mbsStrData2);
     }
 
     /// <inheritdoc/>
