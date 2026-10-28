@@ -1,11 +1,8 @@
-﻿namespace AutomatePdm;
+﻿// <copyright file="IncludeChildrenEnricher.cs" company="SIM Automation">
+// Copyright (c) SIM Automation. All rights reserved.
+// </copyright>
 
-using AutomatePdm.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace AutomatePdm;
 
 internal class IncludeChildrenEnricher : IPipelineStep
 {

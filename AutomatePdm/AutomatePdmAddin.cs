@@ -6,7 +6,6 @@ namespace AutomatePdm;
 
 using System;
 using System.Runtime.InteropServices;
-using AutomatePdm.Services;
 using EPDM.Interop.epdm;
 
 /// <summary>

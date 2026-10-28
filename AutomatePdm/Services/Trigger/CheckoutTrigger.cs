@@ -2,11 +2,11 @@
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 
-namespace AutomatePdm.Services;
+namespace AutomatePdm;
 
 using EPDM.Interop.epdm;
 
-internal class PostCheckoutTrigger : TriggerBase
+public class PostCheckoutTrigger : TriggerBase
 {
     /// <inheritdoc/>
     public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PostLock;

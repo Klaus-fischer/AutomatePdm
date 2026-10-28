@@ -6,7 +6,7 @@ namespace AutomatePdm;
 
 using EPDM.Interop.epdm;
 
-internal abstract class TriggerBase : ITrigger
+public abstract class TriggerBase : ITrigger
 {
     /// <inheritdoc/>
     public abstract EdmCmdType CmdType { get; }
@@ -17,8 +17,14 @@ internal abstract class TriggerBase : ITrigger
     /// <inheritdoc/>
     public abstract string[] ProvidedProperties { get; }
 
+    /// <summary>
+    /// Gets the file Id from the EdmCmdData in the specific Trigger.
+    /// </summary>
     protected abstract Func<EdmCmdData, int> GetFileId { get; }
 
+    /// <summary>
+    /// Gets the folder Id of parent Folder from the EdmCmdData in the specific Trigger.
+    /// </summary>
     protected abstract Func<EdmCmdData, int> GetFolderId { get; }
 
     /// <inheritdoc/>

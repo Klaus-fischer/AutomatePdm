@@ -2,9 +2,9 @@
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 
-namespace AutomatePdm.Services;
+namespace AutomatePdm;
 
-internal static class TriggerExtensions
+public static class TriggerExtensions
 {
     public const string FileId = "FileId";
     public const string FolderId = "FolderId";

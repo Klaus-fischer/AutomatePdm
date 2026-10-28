@@ -2,11 +2,11 @@
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 
-namespace AutomatePdm.Services;
+namespace AutomatePdm;
 
 using EPDM.Interop.epdm;
 
-internal class PostCopyTrigger : TriggerBase
+public class PostCopyTrigger : TriggerBase
 {
     /// <inheritdoc/>
     public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PostAdd;
