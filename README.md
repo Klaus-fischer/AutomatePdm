@@ -17,3 +17,23 @@ Pipeline steps for
 The order should be changeable.
 
 Everything should be configureable over an GUI inside the PDM Adminconsole.
+
+# Use Cases
+
+- Change State to related Files
+1. File Changes from Release to Review
+2. Get Dependendent Files (*PDF and other neutral formats*)
+3. Change their state too
+
+- Change State from neutral formats after commit.
+1. File was commited
+2. Filter: only neutral formats
+3. Filter: source file must be in state release (*if neutral file server tooks too long and source file is in Review again*)
+4. Change state of neutral format to release
+
+- Set variables to project based of properties of the **Main Assembly** from the project. 
+1. File was commited
+2. Filename ends with the project name [^1]
+3. Set Project properties *name*, *comment*, *State*...
+
+[^1]: this is how we structure our construction projects, we dont use generated filenames
