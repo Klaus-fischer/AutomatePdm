@@ -7,7 +7,7 @@ namespace AutomatePdm;
 using System;
 using EPDM.Interop.epdm;
 
-internal class ScheduleTaskAction : IPipelineStep
+public class ScheduleTaskAction : IPipelineStep
 {
     public string TaskName { get; init; } = string.Empty;
 

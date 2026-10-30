@@ -34,7 +34,7 @@ public class PostAddTrigger : TriggerBase
     }
 }
 
-internal class PreviewAddTrigger : ITrigger, IPreEventTrigger
+public class PreviewAddTrigger : ITrigger, IPreEventTrigger
 {
     /// <inheritdoc/>
     public string[] ProvidedProperties =>

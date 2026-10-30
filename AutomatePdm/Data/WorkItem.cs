@@ -27,7 +27,7 @@ public class WorkItem
     public string FilePath
     {
         get => this.filePathReader.Value;
-        set => this.filePathReader = new Lazy<string>(value);
+        set => this.filePathReader = new Lazy<string>(() => value, true);
     }
 
     public string FileName => Path.GetFileName(this.FilePath);

@@ -34,7 +34,7 @@ public class PostUndoCheckoutTrigger : TriggerBase
     }
 }
 
-internal class PreviewUndoCheckoutTrigger : PostUndoCheckoutTrigger, IPreEventTrigger
+public class PreviewUndoCheckoutTrigger : PostUndoCheckoutTrigger, IPreEventTrigger
 {
     /// <inheritdoc/>
     public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PreUndoLock;

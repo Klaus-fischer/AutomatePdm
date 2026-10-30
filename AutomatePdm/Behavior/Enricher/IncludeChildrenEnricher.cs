@@ -4,7 +4,7 @@
 
 namespace AutomatePdm;
 
-internal class IncludeChildrenEnricher : IPipelineStep
+public class IncludeChildrenEnricher : IPipelineStep
 {
     public IPipelineStep? Next { get; set; }
 

@@ -4,7 +4,7 @@
 
 namespace AutomatePdm;
 
-internal class PropertyExpression(string propertyName, string configurationName = "") : IExpression
+public class PropertyExpression(string propertyName, string configurationName = "") : IExpression
 {
     public string PropertyName { get; } = propertyName;
 

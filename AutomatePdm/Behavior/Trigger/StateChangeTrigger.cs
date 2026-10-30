@@ -44,7 +44,7 @@ public class PostStateChangeTrigger : TriggerBase
     }
 }
 
-internal class PreviewStateChangeTrigger : PostStateChangeTrigger, IPreEventTrigger
+public class PreviewStateChangeTrigger : PostStateChangeTrigger, IPreEventTrigger
 {
     /// <inheritdoc/>
     public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PreState;

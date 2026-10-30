@@ -38,7 +38,7 @@ public class PostCopyTrigger : TriggerBase
     }
 }
 
-internal class PreviewCopyTrigger : TriggerBase, IPreEventTrigger
+public class PreviewCopyTrigger : TriggerBase, IPreEventTrigger
 {
     /// <inheritdoc/>
     public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PreCopy;

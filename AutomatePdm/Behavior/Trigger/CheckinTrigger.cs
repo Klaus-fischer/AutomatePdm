@@ -33,7 +33,7 @@ public class PostCheckinTrigger : TriggerBase
     }
 }
 
-internal class PreviewCheckinTrigger : PostCheckinTrigger, IPreEventTrigger
+public class PreviewCheckinTrigger : PostCheckinTrigger, IPreEventTrigger
 {
     /// <inheritdoc/>
     public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PreUnlock;

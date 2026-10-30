@@ -6,7 +6,7 @@ namespace AutomatePdm;
 
 using System.Linq;
 
-internal class ConditionFilter : IPipelineStep
+public class ConditionFilter : IPipelineStep
 {
     public IPipelineStep? Next { get; set; }
 

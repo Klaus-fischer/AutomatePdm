@@ -7,7 +7,7 @@ namespace AutomatePdm;
 using System;
 using EPDM.Interop.epdm;
 
-internal class ChangeStateAction : IPipelineStep
+public class ChangeStateAction : IPipelineStep
 {
     public string TargetStateName { get; init; } = string.Empty;
 

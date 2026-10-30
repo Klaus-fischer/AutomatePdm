@@ -6,7 +6,7 @@ namespace AutomatePdm;
 
 using System;
 
-internal class TextExpression(string text) : IExpression
+public class TextExpression(string text) : IExpression
 {
     public string Text { get; } = text;
 

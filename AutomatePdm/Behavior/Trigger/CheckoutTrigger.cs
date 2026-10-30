@@ -1,4 +1,4 @@
-﻿// <copyright file="DeleteTrigger.cs" company="SIM Automation">
+﻿// <copyright file="CheckoutTrigger.cs" company="SIM Automation">
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 
@@ -6,11 +6,12 @@ namespace AutomatePdm;
 
 using EPDM.Interop.epdm;
 
-public class PostDeleteTrigger : TriggerBase
+public class PostCheckoutTrigger : TriggerBase
 {
     /// <inheritdoc/>
-    public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PostDelete;
+    public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PostLock;
 
+    /// <inheritdoc/>
     public override string[] ProvidedProperties => new string[]
     {
         TriggerExtensions.FileId,
@@ -33,10 +34,10 @@ public class PostDeleteTrigger : TriggerBase
     }
 }
 
-internal class PreviewDeleteTrigger : PostDeleteTrigger, IPreEventTrigger
+public class PreviewCheckoutTrigger : PostCheckoutTrigger, IPreEventTrigger
 {
     /// <inheritdoc/>
-    public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PreDelete;
+    public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PreLock;
 
     /// <inheritdoc/>
     public bool Cancel { get; set; }
