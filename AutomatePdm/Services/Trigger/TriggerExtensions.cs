@@ -12,6 +12,7 @@ public static class TriggerExtensions
     public const string StateTransitionId = "StateTransitionId";
     public const string UserId = "UserId";
     public const string FilePath = "FilePath";
+    public const string FileName = "FileName";
     public const string Name = "Name";
     public const string DestinationStateName = "DestinationStateName";
     public const string SourceStateId = "SourceStateId";

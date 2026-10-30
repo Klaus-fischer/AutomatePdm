@@ -4,8 +4,8 @@
 
 namespace AutomatePdm;
 
-using EPDM.Interop.epdm;
 using System.Collections.Generic;
+using EPDM.Interop.epdm;
 
 public class WorkItem
 {
@@ -20,12 +20,26 @@ public class WorkItem
         this.filePathReader = new Lazy<string>(() => this.File.GetLocalPath(this.Folder.ID));
     }
 
-    internal IEdmFile5 File { get; }
+    public IEdmFile5 File { get; }
 
-    internal IEdmFolder5 Folder { get; }
+    public IEdmFolder5 Folder { get; }
+
+    public string FilePath
+    {
+        get => this.filePathReader.Value;
+        set => this.filePathReader = new Lazy<string>(value);
+    }
+
+    public string FileName => Path.GetFileName(this.FilePath);
 
     public void AddProperty(string key, string value)
     {
+        if (key == TriggerExtensions.FilePath)
+        {
+            this.FilePath = value;
+            return;
+        }
+
         this.stringProperties[key] = value;
     }
 
@@ -33,13 +47,12 @@ public class WorkItem
     {
         if (key == TriggerExtensions.FilePath)
         {
-            if (!this.stringProperties.TryGetValue(TriggerExtensions.FilePath, out var value))
-            {
-                value = this.filePathReader.Value;
-                this.stringProperties.Add(TriggerExtensions.FilePath, value);
-            }
+            return this.FilePath;
+        }
 
-            return value;
+        if (key == TriggerExtensions.FileName)
+        {
+            return this.FileName;
         }
 
         return this.stringProperties.TryGetValue(key, out var result) ? result : null;
