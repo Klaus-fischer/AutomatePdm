@@ -1,4 +1,4 @@
-﻿// <copyright file="SetProjectProperties.cs" company="SIM Automation">
+﻿// <copyright file="SetProjectPropertiesAction.cs" company="SIM Automation">
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 
@@ -6,7 +6,7 @@ namespace AutomatePdm;
 
 using EPDM.Interop.epdm;
 
-public class SetProjectProperties(Dictionary<string, IExpression> propertyExpressions) : IPipelineStep
+public class SetProjectPropertiesAction(Dictionary<string, IExpression> propertyExpressions) : IPipelineStep
 {
     private readonly Dictionary<string, IExpression> propertyExpressions = propertyExpressions;
 
