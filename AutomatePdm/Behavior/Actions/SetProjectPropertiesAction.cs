@@ -5,12 +5,14 @@
 namespace AutomatePdm;
 
 using EPDM.Interop.epdm;
+using System.Text.Json.Serialization;
 
-public class SetProjectPropertiesAction(Dictionary<string, IExpression> propertyExpressions) : IPipelineStep
+public class SetProjectPropertiesAction : IPipelineStep
 {
-    private readonly Dictionary<string, IExpression> propertyExpressions = propertyExpressions;
+    public Dictionary<string, IExpression> PropertyExpressions { get; init; } = new();
 
     /// <inheritdoc/>
+    [JsonIgnore]
     public IPipelineStep? Next { get; set; }
 
     /// <inheritdoc/>
@@ -31,7 +33,7 @@ public class SetProjectPropertiesAction(Dictionary<string, IExpression> property
             return;
         }
 
-        foreach (var expression in this.propertyExpressions)
+        foreach (var expression in this.PropertyExpressions)
         {
             var value = expression.Value.Resolve(item, ctx);
             enumerator.SetVar(expression.Key, string.Empty, value);
@@ -40,3 +42,4 @@ public class SetProjectPropertiesAction(Dictionary<string, IExpression> property
         enumerator.Flush();
     }
 }
+

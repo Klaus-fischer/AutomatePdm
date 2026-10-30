@@ -6,15 +6,15 @@ namespace AutomatePdm;
 
 using System.Text;
 
-public class ConcatStringsExpression(IExpression[] expressions) : IExpression
+public class ConcatStringsExpression : IExpression
 {
-    private readonly IExpression[] expressions = expressions;
+    public required IExpression[] Expressions { get; init; }
 
     public string Resolve(WorkItem workItem, ExecutionContext ctx)
     {
         StringBuilder sb = new StringBuilder();
 
-        foreach (var expression in this.expressions)
+        foreach (var expression in this.Expressions)
         {
             sb.Append(expression.Resolve(workItem, ctx));
         }

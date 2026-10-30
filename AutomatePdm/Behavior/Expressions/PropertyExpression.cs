@@ -4,11 +4,11 @@
 
 namespace AutomatePdm;
 
-public class PropertyExpression(string propertyName, string configurationName = "") : IExpression
+public class PropertyExpression : IExpression
 {
-    public string PropertyName { get; } = propertyName;
+    public required string PropertyName { get; init; } = string.Empty;
 
-    public string ConfigurationName { get; } = configurationName;
+    public string ConfigurationName { get; init; } = string.Empty;
 
     public string Resolve(WorkItem workItem, ExecutionContext ctx)
     {

@@ -5,6 +5,7 @@
 namespace AutomatePdm;
 
 using System;
+using System.Text.Json.Serialization;
 using EPDM.Interop.epdm;
 
 public class ChangeStateAction : IPipelineStep
@@ -16,6 +17,7 @@ public class ChangeStateAction : IPipelineStep
     public EdmStateFlags Flags { get; init; }
 
     /// <inheritdoc/>
+    [JsonIgnore]
     public IPipelineStep? Next { get; set; }
 
     /// <inheritdoc/>

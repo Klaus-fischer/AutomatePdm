@@ -6,9 +6,9 @@ namespace AutomatePdm;
 
 using System;
 
-public class TextExpression(string text) : IExpression
+public class TextExpression : IExpression
 {
-    public string Text { get; } = text;
+    public required string Text { get; init; }
 
     public string Resolve(WorkItem workItem, ExecutionContext ctx)
         => Text;

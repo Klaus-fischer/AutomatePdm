@@ -5,6 +5,7 @@
 namespace AutomatePdm;
 
 using System;
+using System.Text.Json.Serialization;
 using EPDM.Interop.epdm;
 
 public class ScheduleTaskAction : IPipelineStep
@@ -14,6 +15,7 @@ public class ScheduleTaskAction : IPipelineStep
     public string Comment { get; init; } = string.Empty;
 
     /// <inheritdoc/>
+    [JsonIgnore]
     public IPipelineStep? Next { get; set; }
 
     /// <inheritdoc/>
