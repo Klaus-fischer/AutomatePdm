@@ -8,13 +8,13 @@ using System.Text;
 
 public class ConcatStringsExpression : IExpression
 {
-    public required IExpression[] Expressions { get; init; }
+    public required ExpressionCollection ExpressionColletion { get; init; }
 
     public string Resolve(WorkItem workItem, ExecutionContext ctx)
     {
         StringBuilder sb = new StringBuilder();
 
-        foreach (var expression in this.Expressions)
+        foreach (var expression in this.ExpressionColletion)
         {
             sb.Append(expression.Resolve(workItem, ctx));
         }
