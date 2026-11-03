@@ -14,6 +14,7 @@ public class ChangeStateAction : IPipelineStep
 
     public string Comment { get; init; } = string.Empty;
 
+    [JsonIgnore]
     public EdmStateFlags Flags { get; init; }
 
     /// <inheritdoc/>
