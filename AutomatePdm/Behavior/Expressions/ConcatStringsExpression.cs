@@ -8,7 +8,7 @@ using System.Text;
 
 public class ConcatStringsExpression : IExpression
 {
-    public required ExpressionCollection ExpressionColletion { get; init; }
+    public required IExpression[] ExpressionColletion { get; init; }
 
     public string Resolve(WorkItem workItem, ExecutionContext ctx)
     {
