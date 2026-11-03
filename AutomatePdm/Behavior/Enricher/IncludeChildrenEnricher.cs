@@ -6,8 +6,10 @@ namespace AutomatePdm;
 
 public class IncludeChildrenEnricher : IPipelineStep
 {
+    /// <inheritdoc/>
     public IPipelineStep? Next { get; set; }
 
+    /// <inheritdoc/>
     public void Execute(WorkItem[] items, ExecutionContext ctx)
     {
         foreach (var item in items)

@@ -1,15 +1,17 @@
-﻿// <copyright file="SetProjectPropertiesAction.cs" company="SIM Automation">
+﻿// <copyright file="SetProjectVariableAction.cs" company="SIM Automation">
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 
 namespace AutomatePdm;
 
-using EPDM.Interop.epdm;
 using System.Text.Json.Serialization;
+using EPDM.Interop.epdm;
 
-public class SetProjectPropertiesAction : IPipelineStep
+public class SetProjectVariableAction : IPipelineStep
 {
-    public Dictionary<string, IExpression> PropertyExpressions { get; init; } = new();
+    public string VariableName { get; init; }
+
+    public IExpression Expression { get; init; }
 
     /// <inheritdoc/>
     [JsonIgnore]
@@ -28,18 +30,13 @@ public class SetProjectPropertiesAction : IPipelineStep
 
     private void AssignProjectVariables(WorkItem item, ExecutionContext ctx)
     {
-        if (item.Folder is not IEdmEnumeratorVariable6 enumerator)
+        if (item.Folder is not IEdmEnumeratorVariable10 enumerator)
         {
             return;
         }
 
-        foreach (var expression in this.PropertyExpressions)
-        {
-            var value = expression.Value.Resolve(item, ctx);
-            enumerator.SetVar(expression.Key, string.Empty, value);
-        }
-
+        var value = this.Expression.Resolve(item, ctx);
+        enumerator.SetVar(this.VariableName, string.Empty, value);
         enumerator.Flush();
     }
 }
-

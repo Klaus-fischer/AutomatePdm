@@ -4,24 +4,19 @@
 
 namespace AutomatePdm;
 
+/// <summary>
+/// Used to resolve a cached property from a work item.
+/// </summary>
 public class PropertyExpression : IExpression
 {
+    /// <summary>
+    /// Gets the name of the property to resolve.
+    /// </summary>
     public required string PropertyName { get; init; } = string.Empty;
 
-    public string ConfigurationName { get; init; } = string.Empty;
-
+    /// <inheritdoc/>
     public string Resolve(WorkItem workItem, ExecutionContext ctx)
     {
-        var enumerator = workItem.File.GetEnumeratorVariable();
-        if (!enumerator.GetVar(
-            this.PropertyName,
-            this.ConfigurationName,
-            out var valueObject))
-        {
-            ctx.Log($"Variable {this.PropertyName} not found for file {workItem.File.Name}");
-            return string.Empty;
-        }
-
-        return valueObject as string ?? string.Empty;
+       return workItem.GetStringProperty(this.PropertyName) ?? string.Empty;
     }
 }

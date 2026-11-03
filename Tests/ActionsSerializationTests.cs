@@ -8,6 +8,47 @@ using System.Text.Json;
 public sealed class ActionsSerializationTests
 {
     [TestMethod]
+    public void IPipelineStepSerialization()
+    {
+        IPipelineStep action = new ChangeStateAction()
+        {
+            TargetStateName = "FirstState",
+            Comment = "State Changed with comments.",
+            Next = new ChangeStateAction()
+            {
+                TargetStateName = "SecondState",
+                Comment = "Next State Changed with comments.",
+                Next = new ScheduleTaskAction()
+                {
+                    TaskName = "FinalTask",
+                    Comment = "Final Task scheduled with comments."
+                }
+            }
+        };
+
+        string serialized = JsonSerializer.Serialize(action, typeof(IPipelineStep));
+
+        var deserialized = JsonSerializer.Deserialize<IPipelineStep>(serialized);
+
+        if (deserialized is not ChangeStateAction firstAction ||
+            firstAction.Next is not ChangeStateAction secondAction ||
+            secondAction.Next is not ScheduleTaskAction finalAction)
+        {
+            Assert.Fail("Deserialized object structure does not match the expected hierarchy.");
+            return;
+        }
+
+        Assert.AreEqual("FirstState", firstAction.TargetStateName);
+        Assert.AreEqual("State Changed with comments.", firstAction.Comment);
+
+        Assert.AreEqual("SecondState", secondAction.TargetStateName);
+        Assert.AreEqual("Next State Changed with comments.", secondAction.Comment);
+
+        Assert.AreEqual("FinalTask", finalAction.TaskName);
+        Assert.AreEqual("Final Task scheduled with comments.", finalAction.Comment);
+    }
+
+    [TestMethod]
     public void ChangeStateActionSerialization()
     {
         var action = new ChangeStateAction()
@@ -50,43 +91,82 @@ public sealed class ActionsSerializationTests
     }
 
     [TestMethod]
-    public void IPipelineStepSerialization()
+    public void GetFileVariableActionsSerialization()
     {
-        IPipelineStep action = new ChangeStateAction()
+        var expression = new GetFileVariablesAction()
         {
-            TargetStateName = "FirstState",
-            Comment = "State Changed with comments.",
-            Next = new ChangeStateAction()
-            {
-                TargetStateName = "SecondState",
-                Comment = "Next State Changed with comments.",
-                Next = new ScheduleTaskAction()
-                {
-                    TaskName = "FinalTask",
-                    Comment = "Final Task scheduled with comments."
-                }
-            }
+            VariableNames = ["TestVariable1", "TestVariable2"],
+            ConfigurationName = "@",
         };
 
-        string serialized = JsonSerializer.Serialize(action, typeof(IPipelineStep));
+        string serialized = JsonSerializer.Serialize(expression);
+        var deserialized = JsonSerializer.Deserialize<GetFileVariablesAction>(serialized);
 
-        var deserialized = JsonSerializer.Deserialize<IPipelineStep>(serialized);
+        Assert.IsNotNull(deserialized);
+        Assert.AreEqual(expression.VariableNames.Length, deserialized.VariableNames.Length);
+        Assert.AreEqual(expression.VariableNames[0], deserialized.VariableNames[0]);
+        Assert.AreEqual(expression.VariableNames[1], deserialized.VariableNames[1]);
+        Assert.AreEqual(expression.ConfigurationName, deserialized.ConfigurationName);
+    }
 
-        if (deserialized is not ChangeStateAction firstAction ||
-            firstAction.Next is not ChangeStateAction secondAction ||
-            secondAction.Next is not ScheduleTaskAction finalAction)
+    [TestMethod]
+    public void SetFileVariablesActionSerialization()
+    {
+        var expression = new SetFileVariableAction()
         {
-            Assert.Fail("Deserialized object structure does not match the expected hierarchy.");
-            return;
-        }
+            VariableName = "TestVariable1",
+            ConfigurationName = "@",
+            Expression = new TextExpression()
+            {
+                Text = "TestValue",
+            },
+        };
 
-        Assert.AreEqual("FirstState", firstAction.TargetStateName);
-        Assert.AreEqual("State Changed with comments.", firstAction.Comment);
+        string serialized = JsonSerializer.Serialize(expression);
+        var deserialized = JsonSerializer.Deserialize<SetFileVariableAction>(serialized);
 
-        Assert.AreEqual("SecondState", secondAction.TargetStateName);
-        Assert.AreEqual("Next State Changed with comments.", secondAction.Comment);
+        Assert.IsNotNull(deserialized);
+        Assert.AreEqual(expression.VariableName, deserialized.VariableName);
+        Assert.AreEqual(expression.ConfigurationName, deserialized.ConfigurationName);
+        Assert.IsTrue(deserialized.Expression is TextExpression);
+        Assert.AreEqual(((TextExpression)expression.Expression).Text, (deserialized.Expression as TextExpression)?.Text);
+    }
 
-        Assert.AreEqual("FinalTask", finalAction.TaskName);
-        Assert.AreEqual("Final Task scheduled with comments.", finalAction.Comment);
+    [TestMethod]
+    public void GetProjectVariablesActionSerialization()
+    {
+        var expression = new GetProjectVariablesAction()
+        {
+            VariableNames = ["TestVariable1", "TestVariable2"],
+        };
+
+        string serialized = JsonSerializer.Serialize(expression);
+        var deserialized = JsonSerializer.Deserialize<GetProjectVariablesAction>(serialized);
+
+        Assert.IsNotNull(deserialized);
+        Assert.AreEqual(expression.VariableNames.Length, deserialized.VariableNames.Length);
+        Assert.AreEqual(expression.VariableNames[0], deserialized.VariableNames[0]);
+        Assert.AreEqual(expression.VariableNames[1], deserialized.VariableNames[1]);
+    }
+
+    [TestMethod]
+    public void SetProjectVariablesActionSerialization()
+    {
+        var expression = new SetProjectVariableAction()
+        {
+            VariableName = "TestVariable1",
+            Expression = new TextExpression()
+            {
+                Text = "TestValue",
+            },
+        };
+
+        string serialized = JsonSerializer.Serialize(expression);
+        var deserialized = JsonSerializer.Deserialize<SetProjectVariableAction>(serialized);
+
+        Assert.IsNotNull(deserialized);
+        Assert.AreEqual(expression.VariableName, deserialized.VariableName);
+        Assert.IsTrue(deserialized.Expression is TextExpression);
+        Assert.AreEqual(((TextExpression)expression.Expression).Text, (deserialized.Expression as TextExpression)?.Text);
     }
 }
