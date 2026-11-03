@@ -11,7 +11,7 @@ public class FilePathCondition(string regularExpression, bool caseSensitive) : I
     private readonly Regex regex = new Regex(regularExpression, RegexOptions.Compiled | (caseSensitive ? RegexOptions.None : RegexOptions.IgnoreCase));
 
     /// <inheritdoc/>
-    public bool Negate { get; set; }
+    public bool Negate { get; init; }
 
     /// <inheritdoc/>
     public bool IsValid(WorkItem item, ExecutionContext ctx)

@@ -4,19 +4,19 @@
 
 namespace AutomatePdm;
 
-public class OrCondition(params ICondition[] subConditions) : ICondition
+public class OrCondition : ICondition
 {
     /// <inheritdoc/>
-    public bool Negate { get; set; }
+    public bool Negate { get; init; }
 
-    public IReadOnlyList<ICondition> SubConditions { get; } = [.. subConditions];
+    public required IReadOnlyList<ICondition> Conditions { get; init; }
 
     /// <inheritdoc/>
     public bool IsValid(WorkItem item, ExecutionContext ctx)
     {
         var result = false;
 
-        foreach (var condition in this.SubConditions)
+        foreach (var condition in this.Conditions)
         {
             if (condition.IsValid(item, ctx))
             {
