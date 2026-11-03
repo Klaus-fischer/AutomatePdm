@@ -6,9 +6,9 @@ namespace AutomatePdm;
 
 using System.Linq;
 
-public class StatusCondition(string[] validStates) : ICondition
+public class StatusCondition : ICondition
 {
-    private readonly string[] validStates = validStates;
+    public string[] ValidStates { get; set; } = Array.Empty<string>();
 
     /// <inheritdoc/>
     public bool Negate { get; set; }
@@ -17,6 +17,6 @@ public class StatusCondition(string[] validStates) : ICondition
     public bool IsValid(WorkItem item, ExecutionContext ctx)
     {
         var status = item.File.CurrentState.Name;
-        return this.Negate ^ this.validStates.Contains(status);
+        return this.Negate ^ this.ValidStates.Contains(status);
     }
 }

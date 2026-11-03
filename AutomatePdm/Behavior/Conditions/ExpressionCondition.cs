@@ -6,15 +6,15 @@ namespace AutomatePdm;
 
 using System;
 
-internal class ExpressionCondition(IExpression first, IExpression second) : ICondition
+public class ExpressionCondition : ICondition
 {
     public bool Negate { get; set; }
 
-    public bool CaseSensitive { get; set; }
+    public bool CaseSensitive { get; init; }
 
-    public IExpression First { get; } = first;
+    public required IExpression First { get; init; }
 
-    public IExpression Second { get; } = second;
+    public required IExpression Second { get; init; }
 
     public bool IsValid(WorkItem item, ExecutionContext ctx)
     {
