@@ -65,14 +65,10 @@
                             Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
                             />
 
-                    <Button Content="&#xECE7;"
-                            FontFamily="Segoe MDL2 Assets" FontSize="16"
-                            BorderThickness="0" 
-                            Background="Transparent"
-                            Foreground="LightGray"
-                            Grid.Column="3" Grid.Row="0" Grid.RowSpan="2"
-                            Cursor="ScrollNS"
-                            />
+                    <local:ListBoxDragDropButton Content = "&#xECE7;"
+                                                 FontFamily = "Segoe MDL2 Assets"
+                                                 Grid.Column="3" Grid.Row="0" Grid.RowSpan="2"
+                                                 />
                 </Grid>
             </Border>
             <DataTemplate.Triggers>
@@ -118,13 +114,11 @@
                             Foreground="LightGray"
                             Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
                             />
-                    <Button Content="&#xECE7;"
-                            FontFamily="Segoe MDL2 Assets" FontSize="16"
-                            BorderThickness="0" 
-                            Background="Transparent"
-                            Foreground="LightGray"
-                            Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
-                            />  
+
+                    <local:ListBoxDragDropButton Content = "&#xECE7;"
+                                                 FontFamily = "Segoe MDL2 Assets"
+                                                 Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                                                 />
                 </Grid>
             </Border>
         </DataTemplate>
@@ -136,13 +130,13 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <GroupBox Header="Trigger" Grid.Column="0">
-            <ListBox SelectionMode="Single" ItemsSource="{Binding Triggers}"
+            <ListBox x:Name="TriggerListBox" 
+                     SelectionMode="Single" ItemsSource="{Binding Triggers}"
                      SelectedItem="{Binding SelectedTrigger, Mode=TwoWay}"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                
             </ListBox>
         </GroupBox>
-
 
         <GroupBox Header="Script" Grid.Column="1">
             <ListBox SelectionMode="Single"
