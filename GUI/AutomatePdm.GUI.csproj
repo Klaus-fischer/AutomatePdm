@@ -13,9 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Visual\Converter\" />
-    <Folder Include="Commands\" />
-    <Folder Include="Visual\Resources\" />
-    <Folder Include="ViewModel\" />
   </ItemGroup>
 
   <ItemGroup>
