@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomatePdm", "AutomatePdm\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomatePdm.Tests", "Tests\AutomatePdm.Tests.csproj", "{5407F58F-D2BD-45DC-81AC-8ACF138B08F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomatePdm.GUI", "GUI\AutomatePdm.GUI.csproj", "{D3C5694E-69AA-4C21-9669-5E1ED7D7E46E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5407F58F-D2BD-45DC-81AC-8ACF138B08F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5407F58F-D2BD-45DC-81AC-8ACF138B08F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5407F58F-D2BD-45DC-81AC-8ACF138B08F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3C5694E-69AA-4C21-9669-5E1ED7D7E46E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3C5694E-69AA-4C21-9669-5E1ED7D7E46E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3C5694E-69AA-4C21-9669-5E1ED7D7E46E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3C5694E-69AA-4C21-9669-5E1ED7D7E46E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
