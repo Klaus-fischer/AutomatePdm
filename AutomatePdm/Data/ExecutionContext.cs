@@ -11,7 +11,7 @@ public class ExecutionContext(EdmCmd cmd)
 {
     public IEdmVault5 Vault { get; } = (IEdmVault5)cmd.mpoVault;
 
-    public StringBuilder Log { get; } = new StringBuilder();
+    public ILogger Log { get; init; } = new StringBuilderLogger();
 
     public object? Extra { get; } = cmd.mpoExtra;
 

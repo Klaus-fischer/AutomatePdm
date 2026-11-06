@@ -42,36 +42,18 @@ public abstract class TriggerBase : ITrigger
             throw new InvalidOperationException("Vault does not support IEdmVault9 interface.");
         }
 
-        var filesSelection = data
-            .Select(this.GetFileId)
-            .Select(id => new EdmObjectInfo { moObjectID = id, meType = EdmObjectType.EdmObject_File, });
+        var filesSelection = data.Select(this.GetFileId);
+        var folderSelection = data.Select(this.GetFolderId);
 
-        var folderSelection = data
-            .Select(this.GetFolderId)
-            .Select(id => new EdmObjectInfo { moObjectID = id, meType = EdmObjectType.EdmObject_Folder, });
-
-        var objects = filesSelection.Concat(folderSelection).ToArray();
-
-        vault.GetObjects(ref objects);
-
-        var files = objects.Where(o => o.meType == EdmObjectType.EdmObject_File)
-                           .ToDictionary(f => (int)f.moObjectID);
-        var folders = objects.Where(o => o.meType == EdmObjectType.EdmObject_Folder)
-                             .ToDictionary(f => (int)f.moObjectID);
-
+        var (files, folders) = vault.GetFilesAndFolder(filesSelection, folderSelection);
         var result = new List<WorkItem>(data.Length);
 
         foreach (var d in data)
         {
-            var fileObjectInfo = files[this.GetFileId(d)];
-            var folderObjectInfo = folders[this.GetFolderId(d)];
+            var file = files[this.GetFileId(d)];
+            var folder = folders[this.GetFolderId(d)];
 
-            if (fileObjectInfo.mhResult != 0 || folderObjectInfo.mhResult != 0)
-            {
-                continue;
-            }
-
-            var item = new WorkItem((IEdmFile5)fileObjectInfo.mpoObject, (IEdmFolder5)folderObjectInfo.mpoObject);
+            var item = new WorkItem(file, folder);
             this.EnrichProperties(d, item, ctx);
             result.Add(item);
         }
