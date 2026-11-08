@@ -9,7 +9,7 @@ using EPDM.Interop.epdm;
 public class PostCopyTrigger : TriggerBase
 {
     /// <inheritdoc/>
-    public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PostAdd;
+    public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PostCopy;
 
     /// <inheritdoc/>
     public override string[] ProvidedProperties =>
@@ -43,6 +43,7 @@ public class PreviewCopyTrigger : TriggerBase, IPreEventTrigger
     /// <inheritdoc/>
     public override EdmCmdType CmdType => EdmCmdType.EdmCmd_PreCopy;
 
+    /// <inheritdoc/>
     public override string[] ProvidedProperties =>
     [
         TriggerExtensions.DestinationFolderId,
@@ -51,6 +52,9 @@ public class PreviewCopyTrigger : TriggerBase, IPreEventTrigger
         TriggerExtensions.SourceFolderPath,
         TriggerExtensions.DestinationFolderPath,
     ];
+
+    /// <inheritdoc/>
+    public bool Cancel { get; set; }
 
     /// <inheritdoc/>
     protected override Func<EdmCmdData, int> GetFileId => d => d.mlObjectID2;
@@ -67,7 +71,4 @@ public class PreviewCopyTrigger : TriggerBase, IPreEventTrigger
         workItem.AddProperty(TriggerExtensions.SourceFolderPath, data.mbsStrData1);
         workItem.AddProperty(TriggerExtensions.DestinationFolderPath, data.mbsStrData2);
     }
-
-    /// <inheritdoc/>
-    public bool Cancel { get; set; }
 }

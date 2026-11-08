@@ -11,6 +11,7 @@ public static class TriggerExtensions
     public const string ParentFolderId = "ParentFolderId";
     public const string StateTransitionId = "StateTransitionId";
     public const string UserId = "UserId";
+    public const string UserName = "UserName";
     public const string FilePath = "FilePath";
     public const string FileName = "FileName";
     public const string Name = "Name";
@@ -21,4 +22,5 @@ public static class TriggerExtensions
     public const string SourceFolderId = "SourceFolderId";
     public const string SourceFolderPath = "SourceFolderPath";
     public const string DestinationFolderPath = "DestinationFolderPath";
+    public const string TaskName = "TaskName";
 }

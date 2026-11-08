@@ -5,6 +5,7 @@
 namespace AutomatePdm;
 
 using EPDM.Interop.epdm;
+
 public interface ITrigger
 {
     EdmCmdType CmdType { get; }
