@@ -18,6 +18,8 @@ public class ChangeStatePipelineStepViewModel : PipelineStepViewModel, IPipeline
         this.Description = "Ändert den Status des Work Items auf den angegebenen Zielstatus.";
     }
 
+    public NameAndDescription[] TargetStateNameSource { get; } = [];
+
     /// <summary>
     /// Gets or sets the target state name.
     /// </summary>

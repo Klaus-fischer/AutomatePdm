@@ -12,6 +12,9 @@
         <DataTemplate DataType="{x:Type local:TriggerViewModel}">
             <local:TriggerPopup/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type local:ChangeStatePipelineStepViewModel}">
+            <local:ChangeStatePipelineStepPopup/>
+        </DataTemplate>
     </UserControl.Resources>
     <UserControl.Style>
         <Style TargetType="UserControl">
