@@ -11,8 +11,6 @@ using AutomatePdm.GUI.DragDrop;
 
 public class MainViewModel : ViewModelBase
 {
-    private TriggerViewModel? selectedTrigger = null;
-
     private string popupTitle = string.Empty;
 
     private INotifyPropertyChanged? popup = null;
@@ -24,6 +22,7 @@ public class MainViewModel : ViewModelBase
     {
         this.AddTriggerCommand = new AddTriggerCommand(this);
         this.EditTriggerCommand = new EditTriggerCommand(this);
+        this.EditScriptCommand = new EditScriptCommand(this);
     }
 
     public DropAbleCollection<TriggerViewModel> Triggers { get; } = [];
@@ -31,6 +30,8 @@ public class MainViewModel : ViewModelBase
     public ICommand AddTriggerCommand { get; }
 
     public ICommand EditTriggerCommand { get; }
+
+    public ICommand EditScriptCommand { get; }
 
     /// <summary>
     /// Gets or sets the ...

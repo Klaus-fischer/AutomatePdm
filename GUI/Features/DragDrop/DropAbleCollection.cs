@@ -2,14 +2,25 @@
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 
-namespace AutomatePdm.GUI;
+namespace AutomatePdm.GUI.DragDrop;
 
+using System;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
-using AutomatePdm.GUI.DragDrop;
 
-public class DropAbleCollection<T> : ObservableCollection<T>
+public interface ISupportMove
+{
+    /// <summary>
+    /// Move item at oldIndex to newIndex.
+    /// </summary>
+    /// <param name="oldIndex">The index of the item to move.</param>
+    /// <param name="newIndex">The index to move the item to.</param>
+    void Move(int oldIndex, int newIndex);
+}
+
+public class DropAbleCollection<T> : ObservableCollection<T>, ISupportMove
     where T : ICloneable<T>
 {
     private T? selectedItem;
@@ -21,6 +32,16 @@ public class DropAbleCollection<T> : ObservableCollection<T>
     {
         this.DropCommand = new RelayCommand<DropContext>(this.OnDrop);
     }
+
+    /// <summary>
+    /// Gets the type of the items in the collection.
+    /// </summary>
+    public Type Type => typeof(T);
+
+    /// <summary>
+    /// Gets the key associated with the collection.
+    /// </summary>
+    public string Key { get; init; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the selected item in the collection.
@@ -35,6 +56,9 @@ public class DropAbleCollection<T> : ObservableCollection<T>
         }
     }
 
+    /// <summary>
+    /// Gets the command that handles the drop action for the collection.
+    /// </summary>
     public ICommand DropCommand { get; }
 
     private void OnDrop(DropContext context)
@@ -60,43 +84,47 @@ public class DropAbleCollection<T> : ObservableCollection<T>
                 targetIndex -= 1;
             }
 
-            if (context.SourceList == this)
+            if (context.SourceList is ISupportMove moveAble)
             {
-                this.Move(sourceIndex, targetIndex);
+                moveAble.Move(sourceIndex, targetIndex);
             }
             else
             {
-                context.SourceList.RemoveAt(sourceIndex);
-                if (targetIndex > context.TargetList.Count)
-                {
-                    targetIndex = context.TargetList.Count;
-                }
-
-                context.TargetList.Insert(targetIndex, item);
+                MoveItem(context.SourceList, context.TargetList, item, sourceIndex, targetIndex);
             }
         }
         else if (context.Action == DragAction.Move)
         {
-            context.SourceList.RemoveAt(sourceIndex);
-
-            if (targetIndex > context.TargetList.Count)
-            {
-                targetIndex = context.TargetList.Count;
-            }
-
-            context.TargetList.Insert(targetIndex, item);
+            MoveItem(context.SourceList, context.TargetList, item, sourceIndex, targetIndex);
         }
         else if (context.Action == DragAction.Copy)
         {
-            if (targetIndex > context.TargetList.Count)
-            {
-                targetIndex = context.TargetList.Count;
-            }
-
-            item = item.Clone();
-            context.TargetList.Insert(targetIndex, item);
+            CopyItem(context.TargetList, ref item, ref targetIndex);
         }
 
         this.SelectedItem = item;
+    }
+
+    private static void MoveItem(IList source, IList target, T item, int sourceIndex, int targetIndex)
+    {
+        source.RemoveAt(sourceIndex);
+
+        if (targetIndex > target!.Count)
+        {
+            targetIndex = target.Count;
+        }
+
+        target.Insert(targetIndex, item);
+    }
+
+    private static void CopyItem(IList target, ref T item, ref int targetIndex)
+    {
+        if (targetIndex > target.Count)
+        {
+            targetIndex = target.Count;
+        }
+
+        item = item.Clone();
+        target.Insert(targetIndex, item);
     }
 }
