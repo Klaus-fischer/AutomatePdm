@@ -11,7 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Input;
 
-public class TriggerViewModel : ViewModelBase
+public class TriggerViewModel : ViewModelBase, ICloneable<TriggerViewModel>
 {
     private static readonly Lazy<NameAndDescription[]> TriggerNameSourceCollection;
 
@@ -66,4 +66,23 @@ public class TriggerViewModel : ViewModelBase
     public NameAndDescription[] TriggerNameSource { get; } = TriggerNameSourceCollection.Value;
 
     public ObservableCollection<ProcessStepViewModel> Script { get; } = new ObservableCollection<ProcessStepViewModel>();
+
+    /// <inheritdoc/>
+    public TriggerViewModel Clone()
+    {
+        var result = new TriggerViewModel
+        {
+            Title = this.Title,
+            Description = this.Description,
+            TriggerName = this.TriggerName,
+            EditTriggerCommand = this.EditTriggerCommand,
+        };
+
+        foreach (var step in this.Script)
+        {
+            result.Script.Add(step.Clone());
+        }
+
+        return result;
+    }
 }

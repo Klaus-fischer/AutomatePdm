@@ -4,7 +4,7 @@
 
 namespace AutomatePdm.GUI;
 
-public class ProcessStepViewModel : ViewModelBase
+public class ProcessStepViewModel : ViewModelBase, ICloneable<ProcessStepViewModel>
 {
     private string title = string.Empty;
 
@@ -37,5 +37,18 @@ public class ProcessStepViewModel : ViewModelBase
     {
         get => this.processStepName;
         set => this.Set(ref this.processStepName, value);
+    }
+
+    /// <inheritdoc/>
+    public virtual ProcessStepViewModel Clone()
+    {
+        var result = new ProcessStepViewModel
+        {
+            Title = this.Title,
+            Description = this.Description,
+            ProcessStepName = this.ProcessStepName,
+        };
+
+        return result;
     }
 }

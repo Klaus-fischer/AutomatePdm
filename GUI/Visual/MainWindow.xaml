@@ -81,7 +81,6 @@
                                    Foreground="LightGray"
                                    AllowedDropTargets="Trigger"
                                    PreviewElement="{Binding ElementName=Bd}"
-                                   LiveReorder="True"
                                    />
                 </Grid>
             </Border>
@@ -92,9 +91,8 @@
             </DataTemplate.Triggers>
         </DataTemplate>
         <DataTemplate DataType="{x:Type local:ProcessStepViewModel}">
-            <Border CornerRadius="2" 
-                    BorderThickness="1"
-                    Padding="2,0"
+            <Border x:Name="Bd"
+                    CornerRadius="2" BorderThickness="1" Padding="2,0"
                     HorizontalAlignment="Stretch"
                     BorderBrush="Gray" Background="WhiteSmoke">
                 <Border.ToolTip>
@@ -135,7 +133,9 @@
                                    FontSize="16"
                                    BorderThickness="0"
                                    Background="Transparent"
-                                   Foreground="LightGray"
+                                   Foreground="LightGray"  
+                                   AllowedDropTargets="Script"
+                                   PreviewElement="{Binding ElementName=Bd}"
                                    />
                 </Grid>
             </Border>
@@ -162,7 +162,11 @@
         <GroupBox Header="Script" Grid.Column="1">
             <ListBox SelectionMode="Single"
                      ItemsSource="{Binding SelectedTrigger.Script}"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     dd:DropTarget.Key="Script"
+                     dd:DropTarget.AcceptType="{x:Type local:ProcessStepViewModel}"
+                     dd:DropTarget.DropCommand="{Binding DropScriptCommand}"
+                     />
 
         </GroupBox>
         <local:PopupHost Grid.ColumnSpan="3" />

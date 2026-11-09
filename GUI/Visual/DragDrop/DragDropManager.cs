@@ -30,6 +30,10 @@ public static class DragDropManager
     private static AdornerLayer? adornerLayer;
     private static readonly Dictionary<ItemsControl, bool> PreviousAllowDrop = new();
     private static List<string> activeTargetKeys = new();
+    private static DropIndicatorAdorner? dropIndicatorAdorner;
+    private static AdornerLayer? dropIndicatorLayer;
+    private static ItemsControl? currentDropTarget;
+    private static int currentInsertIndex;
 
     public static readonly DependencyProperty IsRootProperty =
         DependencyProperty.RegisterAttached(
@@ -119,6 +123,112 @@ public static class DragDropManager
         {
             Cleanup();
         }
+    }
+
+    private static void ShowDropIndicator(ItemsControl target, int insertIndex)
+    {
+        if (currentDropTarget != target)
+        {
+            HideDropIndicator();
+
+            dropIndicatorLayer =
+                AdornerLayer.GetAdornerLayer(target);
+
+            if (dropIndicatorLayer == null)
+            {
+                return;
+            }
+
+            dropIndicatorAdorner =
+                new DropIndicatorAdorner(target);
+
+            dropIndicatorLayer.Add(dropIndicatorAdorner);
+            currentDropTarget = target;
+        }
+
+        currentInsertIndex = insertIndex;
+
+        double y = GetInsertionY(target, insertIndex);
+
+        dropIndicatorAdorner?.UpdatePosition(y);
+    }
+
+    private static void HideDropIndicator()
+    {
+        if (dropIndicatorAdorner != null && dropIndicatorLayer != null)
+        {
+            dropIndicatorLayer.Remove(dropIndicatorAdorner);
+        }
+
+        dropIndicatorAdorner = null;
+        dropIndicatorLayer = null;
+        currentDropTarget = null;
+    }
+
+    internal static int GetInsertionIndex(ItemsControl itemsControl, Point position)
+    {
+        for (int i = 0; i < itemsControl.Items.Count; i++)
+        {
+            DependencyObject? container =
+                itemsControl.ItemContainerGenerator.ContainerFromIndex(i);
+
+            if (container is not FrameworkElement element)
+            {
+                continue;
+            }
+
+            Point itemPosition = element.TranslatePoint(
+                new Point(0, 0),
+                itemsControl);
+
+            double midpoint =
+                itemPosition.Y + (element.ActualHeight / 2);
+
+            if (position.Y < midpoint)
+            {
+                return i;
+            }
+        }
+
+        return itemsControl.Items.Count;
+    }
+
+    private static double GetInsertionY(ItemsControl target, int index)
+    {
+        if (target.Items.Count == 0)
+        {
+            return 2;
+        }
+
+        if (index >= target.Items.Count)
+        {
+            DependencyObject? lastContainer =
+                target.ItemContainerGenerator.ContainerFromIndex(
+                    target.Items.Count - 1);
+
+            if (lastContainer is FrameworkElement lastItem)
+            {
+                Point position = lastItem.TranslatePoint(
+                    new Point(0, lastItem.ActualHeight),
+                    target);
+
+                return position.Y;
+            }
+
+            return target.ActualHeight;
+        }
+
+        DependencyObject? container =
+            target.ItemContainerGenerator.ContainerFromIndex(index);
+
+        if (container is FrameworkElement item)
+        {
+            return item.TranslatePoint(
+                new Point(0, 0),
+                target).Y;
+        }
+
+        return target.ActualHeight;
     }
 
     private static DragDropEffects GetAllowedEffects(DragHandle handle)
@@ -252,15 +362,17 @@ public static class DragDropManager
         }
 
         DragDropEffects effect = e.Effects;
-        DragAction action = effect == DragDropEffects.Copy
-            ? DragAction.Copy
-            : DragAction.Move;
+        DragAction action = effect switch
+        {
+            DragDropEffects.Copy | DragDropEffects.Move => e.KeyStates.HasFlag(DragDropKeyStates.ControlKey) ? DragAction.Copy : DragAction.Move,
+            DragDropEffects.Copy => DragAction.Copy,
+            DragDropEffects.Move => DragAction.Move,
+            _ => DragAction.Move,
+        };
 
         object? insertBefore = GetInsertBefore(target, e);
         IList? targetList = target.ItemsSource as IList;
-        int insertIndex = insertBefore is null
-            ? target.Items.Count
-            : target.Items.IndexOf(insertBefore);
+        int insertIndex = currentInsertIndex;
 
         var context = new DropContext
         {
@@ -325,6 +437,9 @@ public static class DragDropManager
 
         Point point = e.GetPosition(previewAdorner.AdornedElement);
         previewAdorner.UpdatePosition(point);
+
+        int insertIndex = GetInsertionIndex(target, e.GetPosition(target));
+        ShowDropIndicator(target, insertIndex);
     }
 
     private static void Cleanup()
@@ -336,6 +451,7 @@ public static class DragDropManager
 
         previewAdorner = null;
         adornerLayer = null;
+        HideDropIndicator();
 
         foreach (KeyValuePair<ItemsControl, bool> entry in PreviousAllowDrop)
         {

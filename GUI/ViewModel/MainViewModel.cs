@@ -2,15 +2,12 @@
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 
-using AutomatePdm.GUI;
-using System.Windows.Input;
-
 namespace AutomatePdm.GUI;
 
-using AutomatePdm.GUI.DragDrop;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using AutomatePdm.GUI.DragDrop;
 
 public class MainViewModel : ViewModelBase
 {
@@ -27,7 +24,8 @@ public class MainViewModel : ViewModelBase
     {
         this.AddTriggerCommand = new AddTriggerCommand(this);
         this.EditTriggerCommand = new EditTriggerCommand(this);
-        this.DropTriggerCommand = new RelayCommand<DropContext>(this.Drop);
+        this.DropTriggerCommand = new RelayCommand<DropContext>(this.DropTrigger);
+        this.DropScriptCommand = new RelayCommand<DropContext>(this.DropScript);
     }
 
     public ObservableCollection<TriggerViewModel> Triggers { get; } = [];
@@ -59,29 +57,104 @@ public class MainViewModel : ViewModelBase
 
     public ICommand DropTriggerCommand { get; }
 
-    private void Drop(DropContext context)
+    public ICommand DropScriptCommand { get; }
+
+    private void DropTrigger(DropContext context)
     {
-        if (context.Data is not TriggerViewModel trigger)
+        if (context.Data is not TriggerViewModel trigger ||
+            context.SourceList is null ||
+            context.TargetList is null)
         {
             return;
         }
 
-        if (context.Action == DragAction.Move &&
-            context.SourceList is not null &&
-            context.TargetList is not null)
+        var sourceIndex = context.SourceList.IndexOf(trigger);
+        if (sourceIndex < 0)
         {
-            int sourceIndex = context.SourceList.IndexOf(trigger);
-            if (sourceIndex >= 0)
-            {
-                context.SourceList.RemoveAt(sourceIndex);
-                int targetIndex = context.InsertIndex;
-                if (targetIndex > context.TargetList.Count)
-                {
-                    targetIndex = context.TargetList.Count;
-                }
+            return;
+        }
 
-                context.TargetList.Insert(targetIndex, trigger);
+        if (context.Action == DragAction.Move)
+        {
+            int targetIndex = context.InsertIndex;
+            context.SourceList.RemoveAt(sourceIndex);
+
+            if (context.SourceList == context.TargetList &&
+                sourceIndex < targetIndex)
+            {
+                targetIndex -= 1;
             }
+
+            if (targetIndex > context.TargetList.Count)
+            {
+                targetIndex = context.TargetList.Count;
+            }
+
+            context.TargetList.Insert(targetIndex, trigger);
+        }
+
+        if (context.Action == DragAction.Copy)
+        {
+            int targetIndex = context.InsertIndex;
+            if (targetIndex > context.TargetList.Count)
+            {
+                targetIndex = context.TargetList.Count;
+            }
+
+            trigger = trigger.Clone();
+            context.TargetList.Insert(targetIndex, trigger);
+        }
+
+        if (context.TargetList == this.Triggers)
+        {
+            this.SelectedTrigger = trigger;
+        }
+    }
+
+    private void DropScript(DropContext context)
+    {
+        if (context.Data is not ProcessStepViewModel processStep ||
+            context.SourceList is null ||
+            context.TargetList is null)
+        {
+            return;
+        }
+
+        var sourceIndex = context.SourceList.IndexOf(processStep);
+        if (sourceIndex < 0)
+        {
+            return;
+        }
+
+        if (context.Action == DragAction.Move)
+        {
+            int targetIndex = context.InsertIndex;
+            context.SourceList.RemoveAt(sourceIndex);
+
+            if (context.SourceList == context.TargetList &&
+                sourceIndex < targetIndex)
+            {
+                targetIndex -= 1;
+            }
+
+            if (targetIndex > context.TargetList.Count)
+            {
+                targetIndex = context.TargetList.Count;
+            }
+
+            context.TargetList.Insert(targetIndex, processStep);
+        }
+
+        if (context.Action == DragAction.Copy)
+        {
+            int targetIndex = context.InsertIndex;
+            if (targetIndex > context.TargetList.Count)
+            {
+                targetIndex = context.TargetList.Count;
+            }
+
+            processStep = processStep.Clone();
+            context.TargetList.Insert(targetIndex, processStep);
         }
     }
 }

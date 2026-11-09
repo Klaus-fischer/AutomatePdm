@@ -35,12 +35,12 @@ public class DragHandle : ContentControl
             typeof(DragHandle),
             new PropertyMetadata(true));
 
-    public static readonly DependencyProperty LiveReorderProperty =
-        DependencyProperty.Register(
-            nameof(LiveReorder),
-            typeof(bool),
-            typeof(DragHandle),
-            new PropertyMetadata(false));
+    //public static readonly DependencyProperty LiveReorderProperty =
+    //    DependencyProperty.Register(
+    //        nameof(LiveReorder),
+    //        typeof(bool),
+    //        typeof(DragHandle),
+    //        new PropertyMetadata(false));
 
     public static readonly DependencyProperty KeepPlaceholderProperty =
         DependencyProperty.Register(
@@ -105,11 +105,11 @@ public class DragHandle : ContentControl
         set => this.SetValue(AllowCopyProperty, value);
     }
 
-    public bool LiveReorder
-    {
-        get => (bool)this.GetValue(LiveReorderProperty);
-        set => this.SetValue(LiveReorderProperty, value);
-    }
+    //public bool LiveReorder
+    //{
+    //    get => (bool)this.GetValue(LiveReorderProperty);
+    //    set => this.SetValue(LiveReorderProperty, value);
+    //}
 
     public bool KeepPlaceholder
     {
