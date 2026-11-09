@@ -10,6 +10,9 @@ using EPDM.Interop.epdm;
 
 public class ChangeStateAction : IPipelineStep
 {
+    /// <inheritdoc/>
+    public Metadata Metadata { get; set; }
+
     public string TargetStateName { get; init; } = string.Empty;
 
     public string Comment { get; init; } = string.Empty;

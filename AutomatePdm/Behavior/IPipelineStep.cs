@@ -8,14 +8,36 @@ using System.Collections.Frozen;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+/// <summary>
+/// Defines a step in a processing pipeline
+/// that can be executed on work items
+/// within a given execution context.
+/// </summary>
 [JsonConverter(typeof(IPipelineStepConverter))]
 public interface IPipelineStep
 {
-    void Execute(WorkItem[] items, ExecutionContext ctx);
+    /// <summary>
+    /// Gets or sets the metadata for the pipeline step, including title and description.
+    /// </summary>
+    public Metadata Metadata { get; set; }
 
+    /// <summary>
+    /// Gets or sets the next pipeline step to execute after this one.
+    /// </summary>
     public IPipelineStep? Next { get; set; }
+
+    /// <summary>
+    /// Executes the pipeline step on the provided work items within the given execution context.
+    /// </summary>
+    /// <param name="items">The work items to process.</param>
+    /// <param name="ctx">The execution context.</param>
+    void Execute(WorkItem[] items, ExecutionContext ctx);
 }
 
+/// <summary>
+/// A custom JSON converter for the <see cref="IPipelineStep"/> interface,
+/// enabling serialization and deserialization of pipeline steps in a polymorphic manner.
+/// </summary>
 internal class IPipelineStepConverter : JsonConverter<IPipelineStep>
 {
     private static readonly FrozenDictionary<string, Type> PipelineStepTypes;

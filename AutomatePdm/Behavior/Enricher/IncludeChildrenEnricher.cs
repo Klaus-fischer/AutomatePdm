@@ -7,6 +7,9 @@ namespace AutomatePdm;
 public class IncludeChildrenEnricher : IPipelineStep
 {
     /// <inheritdoc/>
+    public Metadata Metadata { get; set; }
+
+    /// <inheritdoc/>
     public IPipelineStep? Next { get; set; }
 
     /// <inheritdoc/>

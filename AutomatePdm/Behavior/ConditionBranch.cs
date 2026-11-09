@@ -6,6 +6,9 @@ namespace AutomatePdm;
 
 public class ConditionBranch(ICondition condition) : IPipelineStep
 {
+    /// <inheritdoc/>
+    public Metadata Metadata { get; set; }
+
     public ICondition Condition { get; } = condition;
 
     public IPipelineStep? Branch { get; set; }

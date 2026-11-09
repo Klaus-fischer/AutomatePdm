@@ -9,6 +9,9 @@ using EPDM.Interop.epdm;
 
 public class SetFileVariableAction : IPipelineStep
 {
+    /// <inheritdoc/>
+    public Metadata Metadata { get; set; }
+
     public string VariableName { get; init; }
 
     public string ConfigurationName { get; init; } = string.Empty;

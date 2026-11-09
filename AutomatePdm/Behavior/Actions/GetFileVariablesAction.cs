@@ -6,14 +6,19 @@ namespace AutomatePdm;
 
 using EPDM.Interop.epdm;
 using System;
+using System.Text.Json.Serialization;
 
 public class GetFileVariablesAction : IPipelineStep
 {
+    /// <inheritdoc/>
+    public Metadata Metadata { get; set; }
+
     public string[] VariableNames { get; init; } = Array.Empty<string>();
 
     public string ConfigurationName { get; init; } = string.Empty;
 
     /// <inheritdoc/>
+    [JsonIgnore]
     public IPipelineStep? Next { get; set; }
 
     /// <inheritdoc/>

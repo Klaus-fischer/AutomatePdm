@@ -10,6 +10,9 @@ using EPDM.Interop.epdm;
 
 public class ScheduleTaskAction : IPipelineStep
 {
+    /// <inheritdoc/>
+    public Metadata Metadata { get; set; }
+
     public string TaskName { get; init; } = string.Empty;
 
     public string Comment { get; init; } = string.Empty;

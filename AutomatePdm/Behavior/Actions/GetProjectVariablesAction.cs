@@ -5,13 +5,18 @@
 namespace AutomatePdm;
 
 using System;
+using System.Text.Json.Serialization;
 using EPDM.Interop.epdm;
 
 public class GetProjectVariablesAction : IPipelineStep
 {
+    /// <inheritdoc/>
+    public Metadata Metadata { get; set; }
+
     public string[] VariableNames { get; init; } = Array.Empty<string>();
 
     /// <inheritdoc/>
+    [JsonIgnore]
     public IPipelineStep? Next { get; set; }
 
     /// <inheritdoc/>

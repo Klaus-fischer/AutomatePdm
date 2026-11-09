@@ -9,6 +9,9 @@ using EPDM.Interop.epdm;
 
 public class SetProjectVariableAction : IPipelineStep
 {
+    /// <inheritdoc/>
+    public Metadata Metadata { get; set; }
+
     public string VariableName { get; init; }
 
     public IExpression Expression { get; init; }
