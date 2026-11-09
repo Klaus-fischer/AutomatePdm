@@ -7,6 +7,7 @@ namespace AutomatePdm.GUI.DragDrop;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,16 +20,15 @@ using System.Windows.Media;
 /// </summary>
 public static class DragDropManager
 {
-    private static readonly List<ItemsControl> RegisteredTargets = new();
+    private static readonly List<FrameworkElement> RegisteredTargets = new();
 
     private static DragHandle? activeHandle;
     private static object? activeData;
     private static ItemsControl? sourceControl;
     private static IList? sourceList;
-    private static int sourceIndex = -1;
     private static DragPreviewAdorner? previewAdorner;
     private static AdornerLayer? adornerLayer;
-    private static readonly Dictionary<ItemsControl, bool> PreviousAllowDrop = new();
+    private static readonly Dictionary<FrameworkElement, bool> PreviousAllowDrop = new();
     private static List<string> activeTargetKeys = new();
     private static DropIndicatorAdorner? dropIndicatorAdorner;
     private static AdornerLayer? dropIndicatorLayer;
@@ -48,7 +48,7 @@ public static class DragDropManager
     public static void SetIsRoot(DependencyObject obj, bool value)
         => obj.SetValue(IsRootProperty, value);
 
-    internal static void RefreshDropTarget(ItemsControl control)
+    internal static void RefreshDropTarget(FrameworkElement control)
     {
         if (string.IsNullOrWhiteSpace(DropTarget.GetKey(control)))
         {
@@ -66,7 +66,7 @@ public static class DragDropManager
         DropTarget.SetIsRegistered(control, true);
     }
 
-    internal static void UnregisterDropTarget(ItemsControl control)
+    internal static void UnregisterDropTarget(FrameworkElement control)
     {
         if (!RegisteredTargets.Remove(control))
         {
@@ -96,7 +96,6 @@ public static class DragDropManager
         activeData = data;
         sourceControl = FindAncestorItemsControl(handle);
         sourceList = sourceControl?.ItemsSource as IList;
-        sourceIndex = sourceList?.IndexOf(data) ?? -1;
 
         activeTargetKeys = handle.AllowedDropTargets
             .Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
@@ -250,7 +249,7 @@ public static class DragDropManager
 
     private static void ActivateTargets(DragHandle handle)
     {
-        foreach (ItemsControl target in RegisteredTargets.ToArray())
+        foreach (FrameworkElement target in RegisteredTargets.ToArray())
         {
             string? key = DropTarget.GetKey(target);
             Type? acceptType = DropTarget.GetAcceptType(target);
@@ -302,7 +301,8 @@ public static class DragDropManager
 
     private static void OnDragOver(object sender, DragEventArgs e)
     {
-        if (sender is not ItemsControl target ||
+        if (e.Handled == true ||
+            sender is not FrameworkElement target ||
             activeHandle is null ||
             activeData is null)
         {
@@ -338,7 +338,7 @@ public static class DragDropManager
 
     private static void OnDrop(object sender, DragEventArgs e)
     {
-        if (sender is not ItemsControl target ||
+        if (sender is not FrameworkElement target ||
             activeHandle is null ||
             activeData is null)
         {
@@ -370,21 +370,34 @@ public static class DragDropManager
             _ => DragAction.Move,
         };
 
-        object? insertBefore = GetInsertBefore(target, e);
-        IList? targetList = target.ItemsSource as IList;
-        int insertIndex = currentInsertIndex;
-
         var context = new DropContext
         {
             Data = activeData,
             Action = action,
-            TargetControl = target,
-            TargetList = targetList,
             SourceList = sourceList,
             SourceControl = sourceControl,
-            InsertBefore = insertBefore,
-            InsertIndex = insertIndex,
+            InsertIndex = -1,
+            InsertBefore = null,
         };
+
+        if (target is ItemsControl itemsControl)
+        {
+            object? insertBefore = GetInsertBefore(itemsControl, e);
+            IList? targetList = itemsControl.ItemsSource as IList;
+            int insertIndex = currentInsertIndex;
+
+            context = new DropContext
+            {
+                Data = activeData,
+                Action = action,
+                SourceList = sourceList,
+                SourceControl = sourceControl,
+                InsertBefore = insertBefore,
+                InsertIndex = insertIndex,
+                TargetControl = itemsControl,
+                TargetList = targetList,
+            };
+        }
 
         if (command.CanExecute(context))
         {
@@ -399,7 +412,7 @@ public static class DragDropManager
         e.Handled = true;
     }
 
-    private static bool IsTargetAllowed(ItemsControl target, object data)
+    private static bool IsTargetAllowed(FrameworkElement target, object data)
     {
         string? key = DropTarget.GetKey(target);
         Type? acceptType = DropTarget.GetAcceptType(target);
@@ -428,7 +441,7 @@ public static class DragDropManager
         return null;
     }
 
-    private static void UpdatePreviewPosition(ItemsControl target, DragEventArgs e)
+    private static void UpdatePreviewPosition(FrameworkElement target, DragEventArgs e)
     {
         if (previewAdorner is null || adornerLayer is null)
         {
@@ -438,8 +451,11 @@ public static class DragDropManager
         Point point = e.GetPosition(previewAdorner.AdornedElement);
         previewAdorner.UpdatePosition(point);
 
-        int insertIndex = GetInsertionIndex(target, e.GetPosition(target));
-        ShowDropIndicator(target, insertIndex);
+        if (target is ItemsControl itemsControl)
+        {
+            int insertIndex = GetInsertionIndex(itemsControl, e.GetPosition(itemsControl));
+            ShowDropIndicator(itemsControl, insertIndex);
+        }
     }
 
     private static void Cleanup()
@@ -453,7 +469,7 @@ public static class DragDropManager
         adornerLayer = null;
         HideDropIndicator();
 
-        foreach (KeyValuePair<ItemsControl, bool> entry in PreviousAllowDrop)
+        foreach (var entry in PreviousAllowDrop)
         {
             entry.Key.AllowDrop = entry.Value;
         }
@@ -469,7 +485,6 @@ public static class DragDropManager
         activeData = null;
         sourceControl = null;
         sourceList = null;
-        sourceIndex = -1;
         activeTargetKeys.Clear();
     }
 

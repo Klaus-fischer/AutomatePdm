@@ -13,7 +13,7 @@ public sealed class DropContext
 
     public required DragAction Action { get; init; }
 
-    public required ItemsControl TargetControl { get; init; }
+    public ItemsControl? TargetControl { get; init; }
 
     public IList? TargetList { get; init; }
 

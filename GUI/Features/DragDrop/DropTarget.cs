@@ -70,7 +70,7 @@ public static class DropTarget
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)
     {
-        if (d is not ItemsControl control)
+        if (d is not FrameworkElement control)
         {
             return;
         }
@@ -88,7 +88,7 @@ public static class DropTarget
 
     private static void OnTargetLoaded(object sender, RoutedEventArgs e)
     {
-        if (sender is ItemsControl control)
+        if (sender is FrameworkElement control)
         {
             control.Loaded -= OnTargetLoaded;
             DragDropManager.RefreshDropTarget(control);
@@ -97,7 +97,7 @@ public static class DropTarget
 
     private static void OnTargetUnloaded(object sender, RoutedEventArgs e)
     {
-        if (sender is ItemsControl control)
+        if (sender is FrameworkElement control)
         {
             DragDropManager.UnregisterDropTarget(control);
         }

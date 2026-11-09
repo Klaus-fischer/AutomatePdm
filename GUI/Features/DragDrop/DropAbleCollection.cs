@@ -64,11 +64,12 @@ public class DropAbleCollection<T> : ObservableCollection<T>, ISupportMove
     private void OnDrop(DropContext context)
     {
         if (context.Data is not T item ||
-            context.SourceList is null ||
-            context.TargetList is null)
+            context.SourceList is not IList sourceList)
         {
             return;
         }
+
+        var targetList = context.TargetList ?? this;
 
         var sourceIndex = context.SourceList.IndexOf(item);
         int targetIndex = context.InsertIndex;
@@ -77,29 +78,29 @@ public class DropAbleCollection<T> : ObservableCollection<T>, ISupportMove
             return;
         }
 
-        if (context.Action == DragAction.Move && context.SourceList == context.TargetList)
+        if (context.Action == DragAction.Move && sourceList == targetList)
         {
             if (sourceIndex < targetIndex)
             {
                 targetIndex -= 1;
             }
 
-            if (context.SourceList is ISupportMove moveAble)
+            if (sourceList is ISupportMove moveAble)
             {
                 moveAble.Move(sourceIndex, targetIndex);
             }
             else
             {
-                MoveItem(context.SourceList, context.TargetList, item, sourceIndex, targetIndex);
+                MoveItem(sourceList, targetList, item, sourceIndex, targetIndex);
             }
         }
         else if (context.Action == DragAction.Move)
         {
-            MoveItem(context.SourceList, context.TargetList, item, sourceIndex, targetIndex);
+            MoveItem(sourceList, targetList, item, sourceIndex, targetIndex);
         }
         else if (context.Action == DragAction.Copy)
         {
-            CopyItem(context.TargetList, ref item, ref targetIndex);
+            CopyItem(targetList, ref item, ref targetIndex);
         }
 
         this.SelectedItem = item;
@@ -109,7 +110,7 @@ public class DropAbleCollection<T> : ObservableCollection<T>, ISupportMove
     {
         source.RemoveAt(sourceIndex);
 
-        if (targetIndex > target!.Count)
+        if (targetIndex > target!.Count || targetIndex == -1)
         {
             targetIndex = target.Count;
         }
@@ -119,7 +120,7 @@ public class DropAbleCollection<T> : ObservableCollection<T>, ISupportMove
 
     private static void CopyItem(IList target, ref T item, ref int targetIndex)
     {
-        if (targetIndex > target.Count)
+        if (targetIndex > target.Count || targetIndex == -1)
         {
             targetIndex = target.Count;
         }

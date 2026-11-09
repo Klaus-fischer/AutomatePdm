@@ -46,28 +46,24 @@
             vm.Triggers.Last().Script.Add(new PipelineStepViewModel()
             {
                 Title = "Dateityp ist SldWorks",
-                ProcessStepName = nameof(ConditionFilter),
                 EditCommand = vm.EditScriptCommand,
             });
 
             vm.Triggers.Last().Script.Add(new PipelineStepViewModel()
             {
                 Title = "Status ist 'in Bearbeitung'",
-                ProcessStepName = nameof(ConditionFilter),
                 EditCommand = vm.EditScriptCommand,
             });
 
             vm.Triggers.Last().Script.Add(new PipelineStepViewModel()
             {
                 Title = "Zielstatus ist 'Freigegeben'",
-                ProcessStepName = nameof(ConditionFilter),
                 EditCommand = vm.EditScriptCommand,
             });
 
             vm.Triggers.Last().Script.Add(new PipelineStepViewModel()
             {
                 Title = "Eigenschaft XY ist nicht ''",
-                ProcessStepName = nameof(ConditionFilter),
                 EditCommand = vm.EditScriptCommand,
             });
 
