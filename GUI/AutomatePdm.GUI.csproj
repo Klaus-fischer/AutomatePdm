@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Visual\Converter\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Visual\Controls\ListBoxDragDropButton.cs" />
   </ItemGroup>
 

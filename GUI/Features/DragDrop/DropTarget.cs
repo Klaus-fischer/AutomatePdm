@@ -66,6 +66,39 @@ public static class DropTarget
     internal static void SetIsRegistered(DependencyObject obj, bool value)
         => obj.SetValue(IsRegisteredProperty, value);
 
+    public static readonly DependencyProperty AllowCopyProperty =
+        DependencyProperty.RegisterAttached("AllowCopy",
+            typeof(bool),
+            typeof(DropTarget),
+            new PropertyMetadata(true));
+
+    public static bool GetAllowCopy(DependencyObject obj)
+    {
+        return (bool)obj.GetValue(AllowCopyProperty);
+    }
+
+    public static void SetAllowCopy(DependencyObject obj, bool value)
+    {
+        obj.SetValue(AllowCopyProperty, value);
+    }
+
+    public static readonly DependencyProperty AllowMoveProperty =
+        DependencyProperty.RegisterAttached(
+            "AllowMove",
+            typeof(bool),
+            typeof(DropTarget),
+            new PropertyMetadata(true));
+
+    public static bool GetAllowMove(DependencyObject obj)
+    {
+        return (bool)obj.GetValue(AllowMoveProperty);
+    }
+
+    public static void SetAllowMove(DependencyObject obj, bool value)
+    {
+        obj.SetValue(AllowMoveProperty, value);
+    }
+
     private static void OnTargetPropertyChanged(
         DependencyObject d,
         DependencyPropertyChangedEventArgs e)

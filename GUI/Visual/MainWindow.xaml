@@ -40,10 +40,18 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="3*"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <GroupBox Header="Trigger" Grid.Column="0">
-            <ListBox x:Name="TriggerListBox" 
+            <DockPanel>
+                <Button DockPanel.Dock="Bottom" >
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="16" Margin="2"/>
+                        <TextBlock Text="Hinzufügen" Margin="5,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <ListBox x:Name="TriggerListBox" 
                      ItemsSource="{Binding Triggers}"
                      SelectedItem="{Binding Triggers.SelectedItem, Mode=TwoWay}"
                      dd:DropTarget.AcceptType="{Binding Triggers.Type}"
@@ -52,9 +60,9 @@
                      SelectionMode="Single"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      >
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type local:TriggerViewModel}">
-                        <Border CornerRadius="2" 
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type local:TriggerViewModel}">
+                            <Border CornerRadius="2" 
                                 x:Name="Bd"
                                 BorderThickness="1"
                                 Padding="2,0"
@@ -63,63 +71,64 @@
                                 dd:DropTarget.AcceptType="{Binding Script.Type}"
                                 dd:DropTarget.DropCommand="{Binding Script.DropCommand}"
                                 dd:DropTarget.Key="Script">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding Title}"
-                                           TextTrimming="CharacterEllipsis" 
-                                           FontSize="14"
-                                           Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0"
-                               />
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
 
-                                <TextBlock Text="on:"
-                                           FontSize="10"
-                                           Grid.Column="0" Grid.Row="1"
-                                           VerticalAlignment="Bottom"
-                                           />
-                                <TextBlock Text="{Binding TriggerName}"
-                                           Margin="5,0"
-                                           Grid.Column="1" Grid.Row="1"
-                                           />
-                                <Button Content="&#xE70F;"
-                                        Command="{Binding EditCommand}"
-                                        CommandParameter="{Binding}"
-                                        FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                        Style="{StaticResource IconButton}"
-                                        Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
-                                        />
-
-                                <dd:DragHandle Content = "&#xECE7;"
-                                               FontFamily = "Segoe MDL2 Assets"
-                                               Grid.Column="3" Grid.Row="0" Grid.RowSpan="2"
-                                               FontSize="16"
-                                               BorderThickness="0" Cursor="ScrollNS"
-                                               Background="Transparent"
-                                               Foreground="LightGray"
-                                               AllowedDropTargets="Trigger"
-                                               PreviewElement="{Binding ElementName=Bd}"
+                                    <dd:DragHandle Content = "&#xECE7;"
+                                                   FontFamily = "Segoe MDL2 Assets"
+                                                   Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                                                   FontSize="16" Margin="0,0,5,0"
+                                                   BorderThickness="0" Cursor="ScrollNS"
+                                                   Background="Transparent"
+                                                   Foreground="LightGray"
+                                                   AllowedDropTargets="Trigger;Delete"
+                                                   PreviewElement="{Binding ElementName=Bd}"
+                                                   />
+                                    <TextBlock Text="{Binding Title}"
+                                               TextTrimming="CharacterEllipsis" 
+                                               FontSize="14"
+                                               Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"
                                                />
-                            </Grid>
-                        </Border>
-                        <DataTemplate.Triggers>
-                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="SkyBlue" />
-                            </DataTrigger>
-                            <Trigger Property="dd:DragDropState.IsDraggingActive" Value="True">
-                                <Setter Property="Opacity" Value="0.5" />
-                            </Trigger>
-                        </DataTemplate.Triggers>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+
+                                    <TextBlock Text="on:"
+                                               FontSize="10"
+                                               Grid.Column="1" Grid.Row="1"
+                                               VerticalAlignment="Bottom"
+                                               />
+                                    <TextBlock Text="{Binding TriggerName}"
+                                               Margin="5,0"
+                                               Grid.Column="2" Grid.Row="1"
+                                               />
+                                    <Button Content="&#xE70F;"
+                                            Command="{Binding EditCommand}"
+                                            CommandParameter="{Binding}"
+                                            FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                            Style="{StaticResource IconButton}"
+                                            Grid.Column="3" Grid.Row="0" Grid.RowSpan="2"
+                                            />
+                                </Grid>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBoxItem}, Path=IsSelected}" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="SkyBlue" />
+                                </DataTrigger>
+                                <Trigger Property="dd:DragDropState.IsDraggingActive" Value="True">
+                                    <Setter Property="Opacity" Value="0.5" />
+                                </Trigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
         </GroupBox>
 
         <GroupBox Header="Script" Grid.Column="1">
@@ -145,41 +154,43 @@
                             </Border.ToolTip>
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding Title}"
-                                           TextTrimming="CharacterEllipsis" 
-                                           FontSize="14"
-                                           Grid.Column="0" Grid.Row="0"
-                                           />
-                                <TextBlock Text="{Binding ProcessStepName}"  Margin="5,0"    
-                                           Grid.Column="0" Grid.Row="1"
-                                           />
-                                <Button Content="&#xE70F;"
-                                        FontFamily="Segoe MDL2 Assets" FontSize="16"
-                                        BorderThickness="0" 
-                                        Background="Transparent"
-                                        Foreground="LightGray"
-                                        Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
-                                        />
-
-                                <dd:DragHandle Content = "&#xECE7;"
+                                <dd:DragHandle Content =  "&#xECE9;"
                                                FontFamily = "Segoe MDL2 Assets"
-                                               Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                                               Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                                               Margin="0,0,5,0"
                                                FontSize="16"
                                                BorderThickness="0"
                                                Background="Transparent"
                                                Foreground="LightGray"  
-                                               AllowedDropTargets="Script;Trigger"
+                                               AllowedDropTargets="Script;Trigger;Delete"
                                                Cursor="ScrollAll"
                                                PreviewElement="{Binding ElementName=Bd}"
                                                />
+                                <TextBlock Text="{Binding Title}"
+                                           TextTrimming="CharacterEllipsis" 
+                                           FontSize="14"
+                                           Grid.Column="1" Grid.Row="0"
+                                           />
+                                <TextBlock Text="{Binding ProcessStepName}"  Margin="5,0"    
+                                           Grid.Column="1" Grid.Row="1"
+                                           />
+                                <Button Content="&#xE70F;"
+                                        FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                        Command="{Binding EditCommand}"
+                                        CommandParameter="{Binding}"
+                                        BorderThickness="0" 
+                                        Background="Transparent"
+                                        Foreground="LightGray"
+                                        Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                                        />
                             </Grid>
                         </Border>
                         <DataTemplate.Triggers>
@@ -196,46 +207,66 @@
 
         </GroupBox>
 
-        <GroupBox Header="Templates" Grid.Column="2">
-            <ListBox SelectionMode="Single"
+        <DockPanel Grid.Column="2" LastChildFill="True">
+            <DockPanel.Resources>
+                <local:BoolToKeyConverter x:Key="ColorConverter">
+                    <local:BoolToKeyConverter.TrueValue>
+                        <SolidColorBrush Color="Crimson"/>
+                    </local:BoolToKeyConverter.TrueValue>
+                    <local:BoolToKeyConverter.FalseValue>
+                        <SolidColorBrush Color="LightGray"/>
+                    </local:BoolToKeyConverter.FalseValue>
+                </local:BoolToKeyConverter>
+            </DockPanel.Resources>
+            
+            <Border DockPanel.Dock="Bottom" 
+                    BorderThickness="1"
+                    Background="Transparent"
+                    ToolTip="Elemente zum Löschen hier her ziehen."
+                    BorderBrush="{Binding RelativeSource={RelativeSource Self}, Path=AllowDrop, Converter={StaticResource ColorConverter}}"
+                    CornerRadius="2"
+                    Margin="1"
+                    dd:DropTarget.Key="Delete"
+                    dd:DropTarget.DropCommand="{Binding DeleteCommand}"
+                    dd:DropTarget.AllowCopy="False"
+                    >
+                <TextBlock HorizontalAlignment="Center"
+                           Foreground="{Binding RelativeSource={RelativeSource Self}, Path=AllowDrop, Converter={StaticResource ColorConverter}}"
+                           Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="32" 
+                           Margin="2"
+                           />
+            </Border>
+            <GroupBox Header="Templates" Grid.Column="2" >
+                <ListBox SelectionMode="Single"
                      ItemsSource="{Binding DragableProcessSteps}"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      >
-                <ListBox.ItemTemplate>
-                    <DataTemplate DataType="{x:Type local:PipelineStepViewModel}">
-                        <Border x:Name="Bd"
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type local:PipelineStepViewModel}">
+                            <Border x:Name="Bd"
                                 CornerRadius="2" BorderThickness="1" Padding="2,0"
                                 HorizontalAlignment="Stretch"
                                 BorderBrush="Gray" Background="WhiteSmoke">
-                            <Border.ToolTip>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Title}" FontSize="14"/>
-                                    <TextBlock Text="{Binding Description}"/>
-                                </StackPanel>
-                            </Border.ToolTip>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding Title}"
-                                           TextTrimming="CharacterEllipsis" 
-                                           FontSize="14"
-                                           Grid.Column="0" Grid.Row="0"
-                                           />
-                                <TextBlock Text="{Binding ProcessStepName}"
-                                           Margin="5,0"    
-                                           Grid.Column="0" Grid.Row="1"
-                                           />
+                                <Border.ToolTip>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Title}" FontSize="14"/>
+                                        <TextBlock Text="{Binding Description}"/>
+                                    </StackPanel>
+                                </Border.ToolTip>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
 
-                                <dd:DragHandle Content = "&#xECE9;"
+                                    <dd:DragHandle Content = "&#xECE9;"
                                                FontFamily = "Segoe MDL2 Assets"
-                                               Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
-                                               FontSize="16"
+                                               Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                                               FontSize="16" Margin="0,0,5,0"
                                                BorderThickness="0"
                                                Background="Transparent"
                                                Foreground="LightGray"  
@@ -244,13 +275,23 @@
                                                AllowMove="False"
                                                PreviewElement="{Binding ElementName=Bd}"
                                                />
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
 
-        </GroupBox>
+                                    <TextBlock Text="{Binding Title}"
+                                           TextTrimming="CharacterEllipsis" 
+                                           FontSize="14"
+                                           Grid.Column="1" Grid.Row="0"
+                                           />
+                                    <TextBlock Text="{Binding ProcessStepName}"
+                                           Margin="5,0"    
+                                           Grid.Column="1" Grid.Row="1"
+                                           />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+        </DockPanel>
         <local:PopupHost Grid.ColumnSpan="3" />
     </Grid>
 </Window>

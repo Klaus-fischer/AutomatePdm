@@ -7,7 +7,6 @@ namespace AutomatePdm.GUI.DragDrop;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -164,7 +163,7 @@ public static class DragDropManager
         currentDropTarget = null;
     }
 
-    internal static int GetInsertionIndex(ItemsControl itemsControl, Point position)
+    private static int GetInsertionIndex(ItemsControl itemsControl, Point position)
     {
         for (int i = 0; i < itemsControl.Items.Count; i++)
         {
@@ -316,24 +315,37 @@ public static class DragDropManager
             return;
         }
 
-        DragDropEffects available = GetAllowedEffects(activeHandle);
-        DragDropEffects requested = (Keyboard.Modifiers & ModifierKeys.Control) != 0
-            ? DragDropEffects.Copy
-            : DragDropEffects.Move;
+        DragDropEffects effects = GetAllowedEffects(activeHandle);
+        CheckTargetAllowedEffects(ref effects, target);
+        CheckKeyboardSelectEffect(ref effects, e.KeyStates);
 
-        if ((available & requested) == 0)
-        {
-            requested = (available & DragDropEffects.Move) != 0
-                ? DragDropEffects.Move
-                : (available & DragDropEffects.Copy) != 0
-                    ? DragDropEffects.Copy
-                    : DragDropEffects.None;
-        }
-
-        e.Effects = requested;
+        e.Effects = effects;
         e.Handled = true;
 
         UpdatePreviewPosition(target, e);
+    }
+
+    private static void CheckTargetAllowedEffects(ref DragDropEffects effects, FrameworkElement target)
+    {
+        if (DropTarget.GetAllowMove(target) == false)
+        {
+            effects &= ~DragDropEffects.Move;
+        }
+
+        if (DropTarget.GetAllowCopy(target) == false)
+        {
+            effects &= ~DragDropEffects.Copy;
+        }
+    }
+
+    private static void CheckKeyboardSelectEffect(ref DragDropEffects effects, DragDropKeyStates keyStates)
+    {
+        if (effects == (DragDropEffects.Copy | DragDropEffects.Move))
+        {
+            effects = keyStates.HasFlag(DragDropKeyStates.ControlKey)
+                ? DragDropEffects.Copy
+                : DragDropEffects.Move;
+        }
     }
 
     private static void OnDrop(object sender, DragEventArgs e)
@@ -345,35 +357,24 @@ public static class DragDropManager
             return;
         }
 
-        if (!IsTargetAllowed(target, activeData))
-        {
-            e.Effects = DragDropEffects.None;
-            e.Handled = true;
-            return;
-        }
-
+        DragDropEffects effects = e.Effects;
+        CheckTargetAllowedEffects(ref effects, target);
+        CheckKeyboardSelectEffect(ref effects, e.KeyStates);
         ICommand? command = DropTarget.GetDropCommand(target);
 
-        if (command is null)
+        if (!IsTargetAllowed(target, activeData) ||
+            effects == DragDropEffects.None ||
+            command is null)
         {
             e.Effects = DragDropEffects.None;
             e.Handled = true;
             return;
         }
-
-        DragDropEffects effect = e.Effects;
-        DragAction action = effect switch
-        {
-            DragDropEffects.Copy | DragDropEffects.Move => e.KeyStates.HasFlag(DragDropKeyStates.ControlKey) ? DragAction.Copy : DragAction.Move,
-            DragDropEffects.Copy => DragAction.Copy,
-            DragDropEffects.Move => DragAction.Move,
-            _ => DragAction.Move,
-        };
 
         var context = new DropContext
         {
             Data = activeData,
-            Action = action,
+            Action = effects == DragDropEffects.Move ? DragAction.Move : DragAction.Copy,
             SourceList = sourceList,
             SourceControl = sourceControl,
             InsertIndex = -1,
@@ -389,7 +390,7 @@ public static class DragDropManager
             context = new DropContext
             {
                 Data = activeData,
-                Action = action,
+                Action = context.Action,
                 SourceList = sourceList,
                 SourceControl = sourceControl,
                 InsertBefore = insertBefore,
@@ -402,7 +403,7 @@ public static class DragDropManager
         if (command.CanExecute(context))
         {
             command.Execute(context);
-            e.Effects = effect;
+            e.Effects = effects;
         }
         else
         {

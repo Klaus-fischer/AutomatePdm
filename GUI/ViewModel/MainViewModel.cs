@@ -5,6 +5,7 @@
 namespace AutomatePdm.GUI;
 
 using System;
+using System.Collections;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,6 +32,7 @@ public class MainViewModel : ViewModelBase
         this.AddTriggerCommand = new AddTriggerCommand(this);
         this.EditTriggerCommand = new EditTriggerCommand(this);
         this.EditScriptCommand = new EditScriptCommand(this);
+        this.DeleteCommand = new RelayCommand<DropContext>(this.DeleteOnDrop);
         this.DragableProcessSteps = this.GetPipelineSteps();
     }
 
@@ -52,6 +54,11 @@ public class MainViewModel : ViewModelBase
     /// Gets the command to edit a script associated with a pipeline step.
     /// </summary>
     public ICommand EditScriptCommand { get; }
+
+    /// <summary>
+    /// Gets the command to remove a drag drop element.
+    /// </summary>
+    public ICommand DeleteCommand { get; }
 
     /// <summary>
     /// Gets or sets the title of the popup window.
@@ -88,5 +95,21 @@ public class MainViewModel : ViewModelBase
         }
 
         return result;
+    }
+
+    private void DeleteOnDrop(DropContext context)
+    {
+        if (context.SourceList is not IList list)
+        {
+            return;
+        }
+
+        var sourceIndex = list.IndexOf(context.Data);
+        if (sourceIndex < 0)
+        {
+            return;
+        }
+
+        list.RemoveAt(sourceIndex);
     }
 }
