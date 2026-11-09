@@ -11,7 +11,7 @@ internal class AddTriggerCommand(MainViewModel viewModel) : ViewModelCommand<Mai
     {
         var trigger = new TriggerViewModel()
         {
-            EditTriggerCommand = this.ViewModel.EditTriggerCommand,
+            EditCommand = this.ViewModel.EditTriggerCommand,
         };
         this.ViewModel.Triggers.Add(trigger);
         this.ViewModel.Triggers.SelectedItem = trigger;

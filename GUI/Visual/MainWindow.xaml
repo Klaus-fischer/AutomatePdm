@@ -149,12 +149,13 @@
         </Grid.ColumnDefinitions>
         <GroupBox Header="Trigger" Grid.Column="0">
             <ListBox x:Name="TriggerListBox" 
-                     SelectionMode="Single" ItemsSource="{Binding Triggers}"
+                     ItemsSource="{Binding Triggers}"
                      SelectedItem="{Binding Triggers.SelectedItem, Mode=TwoWay}"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     dd:DropTarget.Key="Trigger"
-                     dd:DropTarget.AcceptType="{x:Type local:TriggerViewModel}"
+                     dd:DropTarget.AcceptType="{Binding Triggers.Type}"
                      dd:DropTarget.DropCommand="{Binding Triggers.DropCommand}"
+                     dd:DropTarget.Key="Trigger"
+                     SelectionMode="Single"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      />
 
         </GroupBox>
@@ -163,10 +164,10 @@
             <ListBox SelectionMode="Single"
                      DataContext="{Binding Triggers.SelectedItem}"
                      ItemsSource="{Binding Script}"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     dd:DropTarget.Key="Script"
-                     dd:DropTarget.AcceptType="{x:Type local:ProcessStepViewModel}"
+                     dd:DropTarget.AcceptType="{Binding Script.Type}"
                      dd:DropTarget.DropCommand="{Binding Script.DropCommand}"
+                     dd:DropTarget.Key="Script"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      />
 
         </GroupBox>

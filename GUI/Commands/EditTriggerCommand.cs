@@ -1,4 +1,4 @@
-﻿// <copyright file="EditTriggerCommand.cs" company="SIM Automation">
+﻿// <copyright file="EditCommand.cs" company="SIM Automation">
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 

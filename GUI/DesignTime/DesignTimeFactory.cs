@@ -24,7 +24,7 @@
                 Title = "Statusänderung nach Checkin",
                 Description = "Ändert den status von Irgendwas zu Irgendwas anderes.",
                 TriggerName = nameof(PostCheckinTrigger),
-                EditTriggerCommand = vm.EditTriggerCommand,
+                EditCommand = vm.EditTriggerCommand,
             });
 
             vm.Triggers.Add(new TriggerViewModel()
@@ -32,7 +32,7 @@
                 Title = "Statusänderung nach Checkout",
                 Description = "Ändert den status von Irgendwas zu Irgendwas anderes.",
                 TriggerName = nameof(PostCheckoutTrigger),
-                EditTriggerCommand = vm.EditTriggerCommand,
+                EditCommand = vm.EditTriggerCommand,
             });
 
             vm.Triggers.Add(new TriggerViewModel()
@@ -40,31 +40,35 @@
                 Title = "Prüfe Bedingung vor Statuswechsel",
                 Description = "Eigenschaft XY muss gesetzt sein, sonst kein Statuswechsel.",
                 TriggerName = nameof(PreviewStateChangeTrigger),
-                EditTriggerCommand = vm.EditTriggerCommand,
+                EditCommand = vm.EditTriggerCommand,
             });
 
             vm.Triggers.Last().Script.Add(new ProcessStepViewModel()
             {
                 Title = "Dateityp ist SldWorks",
                 ProcessStepName = nameof(ConditionFilter),
+                EditCommand = vm.EditScriptCommand,
             });
 
             vm.Triggers.Last().Script.Add(new ProcessStepViewModel()
             {
                 Title = "Status ist 'in Bearbeitung'",
                 ProcessStepName = nameof(ConditionFilter),
+                EditCommand = vm.EditScriptCommand,
             });
 
             vm.Triggers.Last().Script.Add(new ProcessStepViewModel()
             {
                 Title = "Zielstatus ist 'Freigegeben'",
                 ProcessStepName = nameof(ConditionFilter),
+                EditCommand = vm.EditScriptCommand,
             });
 
             vm.Triggers.Last().Script.Add(new ProcessStepViewModel()
             {
                 Title = "Eigenschaft XY ist nicht ''",
                 ProcessStepName = nameof(ConditionFilter),
+                EditCommand = vm.EditScriptCommand,
             });
 
             vm.Triggers.SelectedItem = vm.Triggers.Last();
@@ -80,7 +84,7 @@
                 Title = "Statusänderung nach Checkin",
                 Description = "Ändert den status von Irgendwas zu Irgendwas anderes.",
                 TriggerName = nameof(PostCheckinTrigger),
-                EditTriggerCommand = null!,
+                EditCommand = null!,
             };
         }
     }

@@ -5,11 +5,11 @@
 namespace AutomatePdm.GUI;
 
 using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Input;
+using AutomatePdm.GUI.DragDrop;
 
 public class TriggerViewModel : ViewModelBase, ICloneable<TriggerViewModel>
 {
@@ -58,7 +58,7 @@ public class TriggerViewModel : ViewModelBase, ICloneable<TriggerViewModel>
         set => this.Set(ref this.triggerName, value);
     }
 
-    public required ICommand EditTriggerCommand { get; set; }
+    public required ICommand EditCommand { get; set; }
 
     /// <summary>
     /// Gets the source of items.
@@ -75,7 +75,7 @@ public class TriggerViewModel : ViewModelBase, ICloneable<TriggerViewModel>
             Title = this.Title,
             Description = this.Description,
             TriggerName = this.TriggerName,
-            EditTriggerCommand = this.EditTriggerCommand,
+            EditCommand = this.EditCommand,
         };
 
         foreach (var step in this.Script)

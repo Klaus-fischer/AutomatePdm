@@ -4,6 +4,8 @@
 
 namespace AutomatePdm.GUI;
 
+using System.Windows.Input;
+
 public class ProcessStepViewModel : ViewModelBase, ICloneable<ProcessStepViewModel>
 {
     private string title = string.Empty;
@@ -11,6 +13,8 @@ public class ProcessStepViewModel : ViewModelBase, ICloneable<ProcessStepViewMod
     private string description = string.Empty;
 
     private string processStepName = string.Empty;
+
+    public required ICommand EditCommand { get; set; }
 
     /// <summary>
     /// Gets or sets the title of the trigger.
@@ -47,6 +51,7 @@ public class ProcessStepViewModel : ViewModelBase, ICloneable<ProcessStepViewMod
             Title = this.Title,
             Description = this.Description,
             ProcessStepName = this.ProcessStepName,
+            EditCommand = this.EditCommand,
         };
 
         return result;
