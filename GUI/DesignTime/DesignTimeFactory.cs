@@ -67,7 +67,7 @@
                 ProcessStepName = nameof(ConditionFilter),
             });
 
-            vm.SelectedTrigger = vm.Triggers.Last();
+            vm.Triggers.SelectedItem = vm.Triggers.Last();
             vm.PopupTitle = "Eigenschaften Bearbeiten";
 
             return vm;

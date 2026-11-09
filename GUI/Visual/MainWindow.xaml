@@ -150,22 +150,23 @@
         <GroupBox Header="Trigger" Grid.Column="0">
             <ListBox x:Name="TriggerListBox" 
                      SelectionMode="Single" ItemsSource="{Binding Triggers}"
-                     SelectedItem="{Binding SelectedTrigger, Mode=TwoWay}"
+                     SelectedItem="{Binding Triggers.SelectedItem, Mode=TwoWay}"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      dd:DropTarget.Key="Trigger"
                      dd:DropTarget.AcceptType="{x:Type local:TriggerViewModel}"
-                     dd:DropTarget.DropCommand="{Binding DropTriggerCommand}"
+                     dd:DropTarget.DropCommand="{Binding Triggers.DropCommand}"
                      />
 
         </GroupBox>
 
         <GroupBox Header="Script" Grid.Column="1">
             <ListBox SelectionMode="Single"
-                     ItemsSource="{Binding SelectedTrigger.Script}"
+                     DataContext="{Binding Triggers.SelectedItem}"
+                     ItemsSource="{Binding Script}"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      dd:DropTarget.Key="Script"
                      dd:DropTarget.AcceptType="{x:Type local:ProcessStepViewModel}"
-                     dd:DropTarget.DropCommand="{Binding DropScriptCommand}"
+                     dd:DropTarget.DropCommand="{Binding Script.DropCommand}"
                      />
 
         </GroupBox>

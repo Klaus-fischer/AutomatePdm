@@ -1,4 +1,4 @@
-﻿// <copyright file="DropableCollection.cs" company="SIM Automation">
+﻿// <copyright file="DropAbleCollection.cs" company="SIM Automation">
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 
@@ -9,15 +9,15 @@ using System.ComponentModel;
 using System.Windows.Input;
 using AutomatePdm.GUI.DragDrop;
 
-internal class DropableCollection<T> : ObservableCollection<T>
+public class DropAbleCollection<T> : ObservableCollection<T>
     where T : ICloneable<T>
 {
     private T? selectedItem;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="DropableCollection{T}"/> class.
+    /// Initializes a new instance of the <see cref="DropAbleCollection{T}"/> class.
     /// </summary>
-    public DropableCollection()
+    public DropAbleCollection()
     {
         this.DropCommand = new RelayCommand<DropContext>(this.OnDrop);
     }
@@ -55,17 +55,17 @@ internal class DropableCollection<T> : ObservableCollection<T>
 
         if (context.Action == DragAction.Move && context.SourceList == context.TargetList)
         {
+            if (sourceIndex < targetIndex)
+            {
+                targetIndex -= 1;
+            }
+
             if (context.SourceList == this)
             {
                 this.Move(sourceIndex, targetIndex);
             }
             else
             {
-                if (sourceIndex < targetIndex)
-                {
-                    targetIndex -= 1;
-                }
-
                 context.SourceList.RemoveAt(sourceIndex);
                 if (targetIndex > context.TargetList.Count)
                 {

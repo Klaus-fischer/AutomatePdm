@@ -1,12 +1,14 @@
-﻿namespace AutomatePdm.GUI;
+﻿// <copyright file="ICloneable{T}.cs" company="SIM Automation">
+// Copyright (c) SIM Automation. All rights reserved.
+// </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace AutomatePdm.GUI;
 
-internal interface ICloneable<T>
+/// <summary>
+/// Defines a method for creating a deep copy of an object. 
+/// </summary>
+/// <typeparam name="T">The type of object to clone.</typeparam>
+public interface ICloneable<T>
 {
     /// <summary>
     /// Creates an deep 1:1 copy of the object.
