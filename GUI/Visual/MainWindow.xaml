@@ -90,7 +90,7 @@
                 </DataTrigger>
             </DataTemplate.Triggers>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type local:ProcessStepViewModel}">
+        <DataTemplate DataType="{x:Type local:PipelineStepViewModel}">
             <Border x:Name="Bd"
                     CornerRadius="2" BorderThickness="1" Padding="2,0"
                     HorizontalAlignment="Stretch"

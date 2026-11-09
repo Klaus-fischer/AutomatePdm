@@ -65,7 +65,7 @@ public class TriggerViewModel : ViewModelBase, ICloneable<TriggerViewModel>
     /// </summary>
     public NameAndDescription[] TriggerNameSource { get; } = TriggerNameSourceCollection.Value;
 
-    public DropAbleCollection<ProcessStepViewModel> Script { get; } = [];
+    public DropAbleCollection<PipelineStepViewModel> Script { get; } = [];
 
     /// <inheritdoc/>
     public TriggerViewModel Clone()

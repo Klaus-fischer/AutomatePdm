@@ -7,12 +7,12 @@ namespace AutomatePdm.GUI;
 internal class EditScriptCommand(MainViewModel viewModel) : ViewModelCommand<MainViewModel>(viewModel)
 {
     public override bool CanExecute(object? parameter)
-        => parameter is ProcessStepViewModel;
+        => parameter is PipelineStepViewModel;
 
     /// <inheritdoc/>
     protected override void OnExecute(object? parameter)
     {
-        if (parameter is not ProcessStepViewModel processStepViewModel)
+        if (parameter is not PipelineStepViewModel processStepViewModel)
         {
             return;
         }
