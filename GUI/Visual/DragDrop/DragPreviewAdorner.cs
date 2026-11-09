@@ -2,7 +2,7 @@
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 
-namespace AutomatePdm.GUI;
+namespace AutomatePdm.GUI.DragDrop;
 
 using System.Windows;
 using System.Windows.Documents;

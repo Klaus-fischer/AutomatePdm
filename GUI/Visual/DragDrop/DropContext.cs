@@ -1,8 +1,11 @@
-using AutomatePdm.GUI.Visual.DragDrop;
+// <copyright file="DropContext.cs" company="SIM Automation">
+// Copyright (c) SIM Automation. All rights reserved.
+// </copyright>
+
+namespace AutomatePdm.GUI.DragDrop;
+
 using System.Collections;
 using System.Windows.Controls;
-
-namespace WpfDragDropManager;
 
 public sealed class DropContext
 {

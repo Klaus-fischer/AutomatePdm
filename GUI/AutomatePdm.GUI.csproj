@@ -8,11 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Visual\Controls\ListBoxDragDropButton.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AdditionalFiles Include="..\stylecop.json" Link="stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Visual\Converter\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Visual\Controls\ListBoxDragDropButton.cs" />
   </ItemGroup>
 
   <ItemGroup>

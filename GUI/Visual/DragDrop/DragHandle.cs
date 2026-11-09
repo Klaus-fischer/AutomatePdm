@@ -2,8 +2,9 @@
 // Copyright (c) SIM Automation. All rights reserved.
 // </copyright>
 
-namespace AutomatePdm.GUI;
+namespace AutomatePdm.GUI.DragDrop;
 
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -13,6 +14,48 @@ using System.Windows.Input;
 /// </summary>
 public class DragHandle : ContentControl
 {
+    public static readonly DependencyProperty DragDataProperty =
+        DependencyProperty.Register(
+            nameof(DragData),
+            typeof(object),
+            typeof(DragHandle),
+            new PropertyMetadata(null));
+
+    public static readonly DependencyProperty AllowedDropTargetsProperty =
+        DependencyProperty.Register(
+            nameof(AllowedDropTargets),
+            typeof(string),
+            typeof(DragHandle),
+            new PropertyMetadata(string.Empty));
+
+    public static readonly DependencyProperty AllowMoveProperty =
+        DependencyProperty.Register(
+            nameof(AllowMove),
+            typeof(bool),
+            typeof(DragHandle),
+            new PropertyMetadata(true));
+
+    public static readonly DependencyProperty LiveReorderProperty =
+        DependencyProperty.Register(
+            nameof(LiveReorder),
+            typeof(bool),
+            typeof(DragHandle),
+            new PropertyMetadata(false));
+
+    public static readonly DependencyProperty KeepPlaceholderProperty =
+        DependencyProperty.Register(
+            nameof(KeepPlaceholder),
+            typeof(bool),
+            typeof(DragHandle),
+            new PropertyMetadata(true));
+
+    public static readonly DependencyProperty PreviewElementProperty =
+        DependencyProperty.Register(
+            nameof(PreviewElement),
+            typeof(FrameworkElement),
+            typeof(DragHandle),
+            new PropertyMetadata(null));
+
     private Point dragStartPoint;
     private bool isMouseDown;
 
@@ -30,38 +73,18 @@ public class DragHandle : ContentControl
         this.PreviewMouseMove += this.OnPreviewMouseMove;
     }
 
-    public static readonly DependencyProperty DragDataProperty =
-        DependencyProperty.Register(
-            nameof(DragData),
-            typeof(object),
-            typeof(DragHandle),
-            new PropertyMetadata(null));
-
     public object? DragData
     {
         get => this.GetValue(DragDataProperty);
         set => this.SetValue(DragDataProperty, value);
     }
 
-    public static readonly DependencyProperty AllowedDropTargetsProperty =
-        DependencyProperty.Register(
-            nameof(AllowedDropTargets),
-            typeof(string),
-            typeof(DragHandle),
-            new PropertyMetadata(string.Empty));
 
     public string AllowedDropTargets
     {
         get => (string)this.GetValue(AllowedDropTargetsProperty);
         set => this.SetValue(AllowedDropTargetsProperty, value);
     }
-
-    public static readonly DependencyProperty AllowMoveProperty =
-        DependencyProperty.Register(
-            nameof(AllowMove),
-            typeof(bool),
-            typeof(DragHandle),
-            new PropertyMetadata(true));
 
     public bool AllowMove
     {
@@ -82,38 +105,17 @@ public class DragHandle : ContentControl
         set => this.SetValue(AllowCopyProperty, value);
     }
 
-    public static readonly DependencyProperty LiveReorderProperty =
-        DependencyProperty.Register(
-            nameof(LiveReorder),
-            typeof(bool),
-            typeof(DragHandle),
-            new PropertyMetadata(false));
-
     public bool LiveReorder
     {
         get => (bool)this.GetValue(LiveReorderProperty);
         set => this.SetValue(LiveReorderProperty, value);
     }
 
-    public static readonly DependencyProperty KeepPlaceholderProperty =
-        DependencyProperty.Register(
-            nameof(KeepPlaceholder),
-            typeof(bool),
-            typeof(DragHandle),
-            new PropertyMetadata(true));
-
     public bool KeepPlaceholder
     {
         get => (bool)this.GetValue(KeepPlaceholderProperty);
         set => this.SetValue(KeepPlaceholderProperty, value);
     }
-
-    public static readonly DependencyProperty PreviewElementProperty =
-        DependencyProperty.Register(
-            nameof(PreviewElement),
-            typeof(FrameworkElement),
-            typeof(DragHandle),
-            new PropertyMetadata(null));
 
     public FrameworkElement? PreviewElement
     {

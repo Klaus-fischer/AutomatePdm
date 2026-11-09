@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:core="clr-namespace:AutomatePdm;assembly=AutomatePdm"
         xmlns:local="clr-namespace:AutomatePdm.GUI"
         xmlns:designTime="clr-namespace:AutomatePdm.GUI.DesignTime"
+        xmlns:dd="clr-namespace:AutomatePdm.GUI.DragDrop"
         mc:Ignorable="d"
         d:DataContext="{x:Static designTime:DesignTimeFactory.MainViewModel}"
         Title="MainWindow" Height="450" Width="800">
@@ -13,6 +15,11 @@
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="Padding" Value="0" />
+            <Style.Triggers>
+                <Trigger Property="dd:DragDropState.IsDraggingActive" Value="True">
+                    <Setter Property="Opacity" Value="0.5" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
         <Style TargetType="Button" x:Key="IconButton">
             <Setter Property="BorderThickness" Value="0" />
@@ -65,10 +72,17 @@
                             Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
                             />
 
-                    <local:ListBoxDragDropButton Content = "&#xECE7;"
-                                                 FontFamily = "Segoe MDL2 Assets"
-                                                 Grid.Column="3" Grid.Row="0" Grid.RowSpan="2"
-                                                 />
+                    <dd:DragHandle Content = "&#xECE7;"
+                                   FontFamily = "Segoe MDL2 Assets"
+                                   Grid.Column="3" Grid.Row="0" Grid.RowSpan="2"
+                                   FontSize="16"
+                                   BorderThickness="0"
+                                   Background="Transparent"
+                                   Foreground="LightGray"
+                                   AllowedDropTargets="Trigger"
+                                   PreviewElement="{Binding ElementName=Bd}"
+                                   LiveReorder="True"
+                                   />
                 </Grid>
             </Border>
             <DataTemplate.Triggers>
@@ -115,15 +129,19 @@
                             Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"
                             />
 
-                    <local:ListBoxDragDropButton Content = "&#xECE7;"
-                                                 FontFamily = "Segoe MDL2 Assets"
-                                                 Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
-                                                 />
+                    <dd:DragHandle Content = "&#xECE7;"
+                                   FontFamily = "Segoe MDL2 Assets"
+                                   Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                                   FontSize="16"
+                                   BorderThickness="0"
+                                   Background="Transparent"
+                                   Foreground="LightGray"
+                                   />
                 </Grid>
             </Border>
         </DataTemplate>
     </Window.Resources>
-    <Grid>
+    <Grid dd:DragDropManager.IsRoot="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="3*"/>
@@ -133,9 +151,12 @@
             <ListBox x:Name="TriggerListBox" 
                      SelectionMode="Single" ItemsSource="{Binding Triggers}"
                      SelectedItem="{Binding SelectedTrigger, Mode=TwoWay}"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-               
-            </ListBox>
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     dd:DropTarget.Key="Trigger"
+                     dd:DropTarget.AcceptType="{x:Type local:TriggerViewModel}"
+                     dd:DropTarget.DropCommand="{Binding DropTriggerCommand}"
+                     />
+
         </GroupBox>
 
         <GroupBox Header="Script" Grid.Column="1">
