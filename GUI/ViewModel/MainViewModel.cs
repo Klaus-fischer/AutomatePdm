@@ -21,6 +21,7 @@ public class MainViewModel : ViewModelBase
             .Where(t => typeof(IPipelineStepBuilder).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
             .ToFrozenSet();
 
+    private bool isSimulationMode = false;
     private string popupTitle = string.Empty;
     private INotifyPropertyChanged? popup = null;
 
@@ -67,6 +68,15 @@ public class MainViewModel : ViewModelBase
     {
         get => this.popupTitle;
         set => this.Set(ref this.popupTitle, value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the ui is in simulation mode.
+    /// </summary>
+    public bool IsSimulationMode
+    {
+        get => this.isSimulationMode;
+        set => this.Set(ref this.isSimulationMode, value);
     }
 
     /// <summary>

@@ -7,9 +7,10 @@
         xmlns:local="clr-namespace:AutomatePdm.GUI"
         xmlns:designTime="clr-namespace:AutomatePdm.GUI.DesignTime"
         xmlns:dd="clr-namespace:AutomatePdm.GUI.DragDrop"
+        xmlns:ani="clr-namespace:AutomatePdm.GUI.Animation"
         mc:Ignorable="d"
         d:DataContext="{x:Static designTime:DesignTimeFactory.MainViewModel}"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="800" Width="1200">
     <Window.Resources>
         <Style TargetType="ListBoxItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -35,13 +36,30 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
+        <local:InvertConverter x:Key="InvertConverter"/>
     </Window.Resources>
     <Grid dd:DragDropManager.IsRoot="True">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"
+                              ani:GridAnimation.HideColumn="{Binding IsSimulationMode}"
+                              ani:GridAnimation.ExpandedWidth="2*"
+                              />
             <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition d:Width="3*" 
+                              Width="0" 
+                              ani:GridAnimation.HideColumn="{Binding IsSimulationMode, Converter={StaticResource InvertConverter}}"
+                              ani:GridAnimation.ExpandedWidth="6*"
+                              />
+            <ColumnDefinition Width="*"
+                              ani:GridAnimation.HideColumn="{Binding IsSimulationMode}"
+                              ani:GridAnimation.ExpandedWidth="*"
+                              />
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
         <GroupBox Header="Trigger" Grid.Column="0">
             <DockPanel>
                 <Button DockPanel.Dock="Bottom" >
@@ -207,7 +225,7 @@
 
         </GroupBox>
 
-        <DockPanel Grid.Column="2" LastChildFill="True">
+        <DockPanel Grid.Column="3" LastChildFill="True">
             <DockPanel.Resources>
                 <local:BoolToKeyConverter x:Key="ColorConverter">
                     <local:BoolToKeyConverter.TrueValue>
@@ -236,7 +254,7 @@
                            Margin="2"
                            />
             </Border>
-            <GroupBox Header="Templates" Grid.Column="2" >
+            <GroupBox Header="Templates" >
                 <ListBox SelectionMode="Single"
                      ItemsSource="{Binding DragableProcessSteps}"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -292,6 +310,31 @@
                 </ListBox>
             </GroupBox>
         </DockPanel>
-        <local:PopupHost Grid.ColumnSpan="3" />
+
+        <DockPanel Grid.Row="1" Grid.ColumnSpan="4" LastChildFill="False">
+            <ToggleButton Margin="5" Padding="10,5"
+                          IsChecked="{Binding IsSimulationMode, Converter={StaticResource InvertConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Editieren" VerticalAlignment="Center" />
+                    <TextBlock Text="&#xE70F;" Margin="10,0,0,0"
+                               FontFamily="Segoe MDL2 Assets" FontSize="20"
+                               />
+                </StackPanel>
+            </ToggleButton>
+            <ToggleButton Margin="5" Padding="10,5" 
+                          IsChecked="{Binding IsSimulationMode}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Simulation" VerticalAlignment="Center" />
+                    <TextBlock Text="&#xE768;" Margin="10,0,0,0"
+                               FontFamily="Segoe MDL2 Assets" FontSize="20"
+                               />
+                    <TextBlock Text="&#xE769;" Margin="-9,0,0,0"
+                               FontFamily="Segoe MDL2 Assets" FontSize="20"
+                               />
+                </StackPanel>
+            </ToggleButton>
+        </DockPanel>
+        
+        <local:PopupHost Grid.ColumnSpan="3" Grid.RowSpan="2"/>
     </Grid>
 </Window>
