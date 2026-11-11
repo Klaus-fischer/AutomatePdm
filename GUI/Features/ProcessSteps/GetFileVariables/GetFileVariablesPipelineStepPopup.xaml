@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="AutomatePdm.GUI.GetFileVariablesPipelineStepPopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AutomatePdm.GUI"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance Type=local:GetFileVariablesPipelineStepViewModel}"
+             d:DesignWidth="400"
+             MinWidth="300">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Visual/Resources/ApplicationResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel>
+        <HeaderedContentControl Header="Titel">
+            <TextBox x:Name="TitleTb" Text="{Binding Title, UpdateSourceTrigger=Explicit}"/>
+        </HeaderedContentControl>
+        <HeaderedContentControl Header="Beschreibung">
+            <TextBox x:Name="DescriptionTb" 
+                     Text="{Binding Description, UpdateSourceTrigger=Explicit}"
+                     AcceptsReturn="True"
+                     MinLines="3"/>
+        </HeaderedContentControl>
+        <HeaderedContentControl Header="Name der Variabeln">
+            <TextBox x:Name="VariableNamesTb"
+                     Text="{Binding VariableNames, UpdateSourceTrigger=Explicit}"
+                     MinLines="5"
+                     AcceptsReturn="True"
+                     TextChanged="VariableNames_TextChanged"
+                     PreviewKeyDown="VariableNames_PreviewKeyDown"
+                     />
+        </HeaderedContentControl>
+        <Popup x:Name="SuggestionPopup"
+               PlacementTarget="{Binding ElementName=VariableNamesTb}"
+               Placement="Relative"
+               Width="{Binding ElementName=VariableNamesTb, Path=ActualWidth}"
+               StaysOpen="False">
+            <ListBox x:Name="SuggestionList"
+                     MaxHeight="150"
+                     PreviewMouseLeftButtonUp="SuggestionList_MouseUp" />
+        </Popup>
+        <HeaderedContentControl Header="Name der Konfiguration" ToolTip="z.B. @ für SolidWorks Dateien.">
+            <TextBox x:Name="ConfigurationNameTb" 
+                     Text="{Binding ConfigurationName, UpdateSourceTrigger=Explicit}"
+                     />
+        </HeaderedContentControl>
+    </StackPanel>
+</UserControl>

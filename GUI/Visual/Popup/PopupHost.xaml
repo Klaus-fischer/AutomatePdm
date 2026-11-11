@@ -15,6 +15,9 @@
         <DataTemplate DataType="{x:Type local:ChangeStatePipelineStepViewModel}">
             <local:ChangeStatePipelineStepPopup/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type local:GetFileVariablesPipelineStepViewModel}">
+            <local:GetFileVariablesPipelineStepPopup/>
+        </DataTemplate>
     </UserControl.Resources>
     <UserControl.Style>
         <Style TargetType="UserControl">
@@ -51,15 +54,6 @@
 
         </Border>
 
-        <Border Background="White" Margin="3"
-                Grid.Column="1" Grid.Row="2">
-            <ContentPresenter x:Name="ContentHost" Content="{Binding Popup}"/>
-        </Border>
-
-        <TextBlock Text="{Binding PopupTitle}"
-                   FontSize="14" VerticalAlignment="Center" Margin="5,5,30,5"
-                   Grid.Column="1" Grid.Row="1"/>
-
         <Button Content="&#xF78A;"
                 IsCancel="True" 
                 Foreground="Crimson" Background="White"
@@ -69,6 +63,15 @@
                 HorizontalAlignment="Right"
                 Click="CancelClick"
                 />
+
+        <Border Background="White" Margin="3"
+                Grid.Column="1" Grid.Row="2">
+            <ContentPresenter x:Name="ContentHost" Content="{Binding Popup}"/>
+        </Border>
+
+        <TextBlock Text="{Binding PopupTitle}"
+                   FontSize="14" VerticalAlignment="Center" Margin="5,5,30,5"
+                   Grid.Column="1" Grid.Row="1"/>
 
         <Button IsDefault="True" 
                 Background="White"

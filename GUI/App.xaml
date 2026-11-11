@@ -4,5 +4,7 @@
              xmlns:local="clr-namespace:AutomatePdm.GUI"
              StartupUri="Visual/MainWindow.xaml">
     <Application.Resources>
+        <local:StatusReaderMock x:Key="StatusReader"/>
+        <local:VariableNameReaderMock x:Key="VariableNameReader"/>
     </Application.Resources>
 </Application>
