@@ -47,7 +47,7 @@ public class GridLengthAnimation : AnimationTimeline
         typeof(GridLength);
 
     /// <summary>
-    /// Ruft den Startwert der Animation ab oder legt diesen fest.
+    /// Gets or sets ruft den Startwert der Animation ab oder legt diesen fest.
     /// </summary>
     public GridLength From
     {
@@ -56,7 +56,7 @@ public class GridLengthAnimation : AnimationTimeline
     }
 
     /// <summary>
-    /// Ruft den Zielwert der Animation ab oder legt diesen fest.
+    /// Gets or sets ruft den Zielwert der Animation ab oder legt diesen fest.
     /// </summary>
     public GridLength To
     {
@@ -65,7 +65,7 @@ public class GridLengthAnimation : AnimationTimeline
     }
 
     /// <summary>
-    /// Ruft die optionale Beschleunigungsfunktion der Animation ab oder legt diese fest.
+    /// Gets or sets ruft die optionale Beschleunigungsfunktion der Animation ab oder legt diese fest.
     /// </summary>
     public IEasingFunction? EasingFunction
     {
@@ -97,10 +97,15 @@ public class GridLengthAnimation : AnimationTimeline
 
         progress = this.EasingFunction?.Ease(progress) ?? progress;
 
-        double value = this.From.Value +
-            ((this.To.Value - this.From.Value) * progress);
+        double fromVal = this.From.Value;
+        double toVal = this.To.Value;
 
-        return new GridLength(value, this.To.GridUnitType);
+        if (fromVal > toVal)
+        {
+            return new GridLength(((1 - progress) * (fromVal - toVal)) + toVal, this.To.GridUnitType);
+        }
+
+        return new GridLength((progress * (toVal - fromVal)) + fromVal, this.To.GridUnitType);
     }
 
     /// <summary>

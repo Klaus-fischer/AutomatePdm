@@ -9,6 +9,7 @@
         xmlns:dd="clr-namespace:AutomatePdm.GUI.DragDrop"
         xmlns:ani="clr-namespace:AutomatePdm.GUI.Animation"
         mc:Ignorable="d"
+        local:MainWindow.IsSimulationMode="{Binding IsSimulationMode}"
         d:DataContext="{x:Static designTime:DesignTimeFactory.MainViewModel}"
         Title="MainWindow" Height="800" Width="1200">
     <Window.Resources>
@@ -37,29 +38,16 @@
             </Style.Triggers>
         </Style>
         <local:InvertConverter x:Key="InvertConverter"/>
+        <local:BoolToKeyConverter x:Key="GridColumnsConverter" 
+                                  TrueValue="0*, 3*, 6*, 0"
+                                  FalseValue="2*, 3*, 0*, Auto"/>
     </Window.Resources>
-    <Grid dd:DragDropManager.IsRoot="True">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"
-                              ani:GridAnimation.HideColumn="{Binding IsSimulationMode}"
-                              ani:GridAnimation.ExpandedWidth="2*"
-                              />
-            <ColumnDefinition Width="3*"/>
-            <ColumnDefinition d:Width="3*" 
-                              Width="0" 
-                              ani:GridAnimation.HideColumn="{Binding IsSimulationMode, Converter={StaticResource InvertConverter}}"
-                              ani:GridAnimation.ExpandedWidth="6*"
-                              />
-            <ColumnDefinition Width="*"
-                              ani:GridAnimation.HideColumn="{Binding IsSimulationMode}"
-                              ani:GridAnimation.ExpandedWidth="*"
-                              />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        
+    <ani:AnimatedGrid dd:DragDropManager.IsRoot="True"
+                      x:Name="MainGrid"
+                      d:Columns="2*, 3*, 3*, Auto"
+                      Columns="{Binding IsSimulationMode, Converter={StaticResource GridColumnsConverter}}"
+                      Rows="*, Auto">
+
         <GroupBox Header="Trigger" Grid.Column="0">
             <DockPanel>
                 <Button DockPanel.Dock="Bottom" >
@@ -236,7 +224,7 @@
                     </local:BoolToKeyConverter.FalseValue>
                 </local:BoolToKeyConverter>
             </DockPanel.Resources>
-            
+
             <Border DockPanel.Dock="Bottom" 
                     BorderThickness="1"
                     Background="Transparent"
@@ -334,7 +322,7 @@
                 </StackPanel>
             </ToggleButton>
         </DockPanel>
-        
+
         <local:PopupHost Grid.ColumnSpan="3" Grid.RowSpan="2"/>
-    </Grid>
+    </ani:AnimatedGrid>
 </Window>
