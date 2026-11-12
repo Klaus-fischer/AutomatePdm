@@ -19,6 +19,7 @@ public class GetFileVariablesPipelineStepViewModel : PipelineStepViewModel, IPip
     {
         this.Title = "Lade Datei-Variabeln";
         this.Description = "Läd Datei-Variabeln vom PDM.";
+        this.IconCode = "\uEBC3"; // DctionaryCloud
     }
 
     /// <summary>

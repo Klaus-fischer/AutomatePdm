@@ -14,6 +14,8 @@ public class PipelineStepViewModel : ViewModelBase, ICloneable<PipelineStepViewM
 
     public required ICommand EditCommand { get; set; }
 
+    public string IconCode { get; protected internal set; } = string.Empty;
+
     /// <summary>
     /// Gets or sets the title of the trigger.
     /// </summary>

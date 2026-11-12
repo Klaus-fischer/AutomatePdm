@@ -16,6 +16,7 @@ public class ChangeStatePipelineStepViewModel : PipelineStepViewModel, IPipeline
     {
         this.Title = "Ändere Status";
         this.Description = "Ändert den Status des Work Items auf den angegebenen Zielstatus.";
+        this.IconCode = "\uEF90"; // Flow
     }
 
     public NameAndDescription[] TargetStateNameSource { get; } = [];

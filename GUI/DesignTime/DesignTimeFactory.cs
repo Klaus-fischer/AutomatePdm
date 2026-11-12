@@ -47,24 +47,28 @@
             {
                 Title = "Dateityp ist SldWorks",
                 EditCommand = vm.EditScriptCommand,
+                IconCode = "\uEF90",
             });
 
             vm.Triggers.Last().Script.Add(new PipelineStepViewModel()
             {
                 Title = "Status ist 'in Bearbeitung'",
                 EditCommand = vm.EditScriptCommand,
+                IconCode = "\uEBC3",
             });
 
             vm.Triggers.Last().Script.Add(new PipelineStepViewModel()
             {
                 Title = "Zielstatus ist 'Freigegeben'",
                 EditCommand = vm.EditScriptCommand,
+                IconCode = "\uEF90",
             });
 
             vm.Triggers.Last().Script.Add(new PipelineStepViewModel()
             {
                 Title = "Eigenschaft XY ist nicht ''",
                 EditCommand = vm.EditScriptCommand,
+                IconCode = "\uEBC3",
             });
 
             vm.Triggers.SelectedItem = vm.Triggers.Last();

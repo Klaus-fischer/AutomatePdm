@@ -158,19 +158,38 @@
                                     <TextBlock Text="{Binding Description}"/>
                                 </StackPanel>
                             </Border.ToolTip>
-                            <Grid>
+                            <Grid >
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <dd:DragHandle Content =  "&#xECE9;"
-                                               FontFamily = "Segoe MDL2 Assets"
-                                               Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+
+                                <TextBlock Text="{Binding IconCode}"
+                                           FontFamily="Segoe MDL2 Assets" 
+                                           FontSize="20"
+                                           VerticalAlignment="Center"
+                                           Margin="5,0"
+                                           Grid.Column="0" Grid.RowSpan="2"
+                                           />
+                                <TextBlock Text="{Binding Title}"
+                                           TextTrimming="CharacterEllipsis" 
+                                           FontSize="14"
+                                           Grid.Column="1" Grid.Row="0"
+                                           />
+                                <TextBlock Text="{Binding ProcessStepName}"  Margin="5,0"    
+                                           Grid.Column="1" Grid.Row="1"
+                                           />
+
+                                <dd:DragHandle x:Name="DragHandle"
+                                               Content="&#xECE9;"
+                                               FontFamily="Segoe MDL2 Assets"
+                                               Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
                                                Margin="0,0,5,0"
                                                FontSize="16"
                                                BorderThickness="0"
@@ -180,22 +199,16 @@
                                                Cursor="ScrollAll"
                                                PreviewElement="{Binding ElementName=Bd}"
                                                />
-                                <TextBlock Text="{Binding Title}"
-                                           TextTrimming="CharacterEllipsis" 
-                                           FontSize="14"
-                                           Grid.Column="1" Grid.Row="0"
-                                           />
-                                <TextBlock Text="{Binding ProcessStepName}"  Margin="5,0"    
-                                           Grid.Column="1" Grid.Row="1"
-                                           />
-                                <Button Content="&#xE70F;"
+
+                                <Button x:Name="EditBtn"
+                                        Content="&#xE70F;"
                                         FontFamily="Segoe MDL2 Assets" FontSize="16"
                                         Command="{Binding EditCommand}"
                                         CommandParameter="{Binding}"
                                         BorderThickness="0" 
                                         Background="Transparent"
                                         Foreground="LightGray"
-                                        Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                                        Grid.Column="3" Grid.Row="0" Grid.RowSpan="2"
                                         />
                             </Grid>
                         </Border>
@@ -205,6 +218,10 @@
                             </DataTrigger>
                             <Trigger Property="dd:DragDropState.IsDraggingActive" Value="True">
                                 <Setter Property="Opacity" Value="0.5" />
+                            </Trigger>
+                            <Trigger Property="local:MainWindow.IsSimulationMode" Value="True">
+                                <Setter TargetName="DragHandle" Property="Visibility" Value="Collapsed" />
+                                <Setter TargetName="EditBtn" Property="Visibility" Value="Collapsed" />
                             </Trigger>
                         </DataTemplate.Triggers>
                     </DataTemplate>
@@ -263,24 +280,20 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-
-                                    <dd:DragHandle Content = "&#xECE9;"
-                                               FontFamily = "Segoe MDL2 Assets"
-                                               Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
-                                               FontSize="16" Margin="0,0,5,0"
-                                               BorderThickness="0"
-                                               Background="Transparent"
-                                               Foreground="LightGray"  
-                                               AllowedDropTargets="Script"
-                                               Cursor="ScrollAll"
-                                               AllowMove="False"
-                                               PreviewElement="{Binding ElementName=Bd}"
-                                               />
+                                    
+                                    <TextBlock Text="{Binding IconCode}"
+                                           FontFamily="Segoe MDL2 Assets" 
+                                           FontSize="20"
+                                           VerticalAlignment="Center"
+                                           Margin="5,0"
+                                           Grid.Column="0" Grid.RowSpan="2"
+                                           />
 
                                     <TextBlock Text="{Binding Title}"
                                            TextTrimming="CharacterEllipsis" 
@@ -291,6 +304,20 @@
                                            Margin="5,0"    
                                            Grid.Column="1" Grid.Row="1"
                                            />
+
+
+                                    <dd:DragHandle Content = "&#xECE9;"
+                                               FontFamily = "Segoe MDL2 Assets"
+                                               Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                                               FontSize="16" Margin="5,0,0,0"
+                                               BorderThickness="0"
+                                               Background="Transparent"
+                                               Foreground="LightGray"  
+                                               AllowedDropTargets="Script"
+                                               Cursor="ScrollAll"
+                                               AllowMove="False"
+                                               PreviewElement="{Binding ElementName=Bd}"
+                                               />
                                 </Grid>
                             </Border>
                         </DataTemplate>
