@@ -41,6 +41,7 @@
         <local:BoolToKeyConverter x:Key="GridColumnsConverter" 
                                   TrueValue="0*, 3*, 6*, 0"
                                   FalseValue="2*, 3*, 0*, Auto"/>
+        <local:IconConverter x:Key="IconConverter"/>
     </Window.Resources>
     <ani:AnimatedGrid dd:DragDropManager.IsRoot="True"
                       x:Name="MainGrid"
@@ -52,7 +53,7 @@
             <DockPanel>
                 <Button DockPanel.Dock="Bottom" >
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="16" Margin="2"/>
+                        <local:IconControl Icon="AddBold" Margin="2"/>
                         <TextBlock Text="Hinzufügen" Margin="5,0" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
@@ -89,16 +90,16 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <dd:DragHandle Content = "&#xECE7;"
-                                                   FontFamily = "Segoe MDL2 Assets"
+                                    <dd:DragHandle Content="{x:Static local:Icon.ScrollMode}"
                                                    Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
-                                                   FontSize="16" Margin="0,0,5,0"
+                                                   Margin="0,0,5,0"
                                                    BorderThickness="0" Cursor="ScrollNS"
                                                    Background="Transparent"
                                                    Foreground="LightGray"
                                                    AllowedDropTargets="Trigger;Delete"
                                                    PreviewElement="{Binding ElementName=Bd}"
                                                    />
+
                                     <TextBlock Text="{Binding Title}"
                                                TextTrimming="CharacterEllipsis" 
                                                FontSize="14"
@@ -114,10 +115,9 @@
                                                Margin="5,0"
                                                Grid.Column="2" Grid.Row="1"
                                                />
-                                    <Button Content="&#xE70F;"
+                                    <Button Content="{x:Static local:Icon.Edit}"
                                             Command="{Binding EditCommand}"
                                             CommandParameter="{Binding}"
-                                            FontFamily="Segoe MDL2 Assets" FontSize="16"
                                             Style="{StaticResource IconButton}"
                                             Grid.Column="3" Grid.Row="0" Grid.RowSpan="2"
                                             />
@@ -170,13 +170,11 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Text="{Binding IconCode}"
-                                           FontFamily="Segoe MDL2 Assets" 
-                                           FontSize="20"
-                                           VerticalAlignment="Center"
-                                           Margin="5,0"
-                                           Grid.Column="0" Grid.RowSpan="2"
-                                           />
+                                <local:IconControl Icon="{Binding Icon}"
+                                                   FontSize="20"
+                                                   Margin="5,0"
+                                                   Grid.Column="0" Grid.RowSpan="2"
+                                                   />
                                 <TextBlock Text="{Binding Title}"
                                            TextTrimming="CharacterEllipsis" 
                                            FontSize="14"
@@ -187,11 +185,9 @@
                                            />
 
                                 <dd:DragHandle x:Name="DragHandle"
-                                               Content="&#xECE9;"
-                                               FontFamily="Segoe MDL2 Assets"
+                                               Content="{x:Static local:Icon.PanMode}"
                                                Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
-                                               Margin="0,0,5,0"
-                                               FontSize="16"
+                                               Margin="0,0,5,0"                                             
                                                BorderThickness="0"
                                                Background="Transparent"
                                                Foreground="LightGray"  
@@ -201,8 +197,7 @@
                                                />
 
                                 <Button x:Name="EditBtn"
-                                        Content="&#xE70F;"
-                                        FontFamily="Segoe MDL2 Assets" FontSize="16"
+                                        Content="{x:Static local:Icon.Edit}"
                                         Command="{Binding EditCommand}"
                                         CommandParameter="{Binding}"
                                         BorderThickness="0" 
@@ -253,11 +248,11 @@
                     dd:DropTarget.DropCommand="{Binding DeleteCommand}"
                     dd:DropTarget.AllowCopy="False"
                     >
-                <TextBlock HorizontalAlignment="Center"
-                           Foreground="{Binding RelativeSource={RelativeSource Self}, Path=AllowDrop, Converter={StaticResource ColorConverter}}"
-                           Text="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="32" 
-                           Margin="2"
-                           />
+                <local:IconControl HorizontalAlignment="Center"
+                                   Foreground="{Binding RelativeSource={RelativeSource Self}, Path=AllowDrop, Converter={StaticResource ColorConverter}}"
+                                   Icon="Delete" FontSize="32" 
+                                   Margin="2"
+                                   />
             </Border>
             <GroupBox Header="Templates" >
                 <ListBox SelectionMode="Single"
@@ -267,9 +262,9 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate DataType="{x:Type local:PipelineStepViewModel}">
                             <Border x:Name="Bd"
-                                CornerRadius="2" BorderThickness="1" Padding="2,0"
-                                HorizontalAlignment="Stretch"
-                                BorderBrush="Gray" Background="WhiteSmoke">
+                                    CornerRadius="2" BorderThickness="1" Padding="2,0"
+                                    HorizontalAlignment="Stretch"
+                                    BorderBrush="Gray" Background="WhiteSmoke">
                                 <Border.ToolTip>
                                     <StackPanel>
                                         <TextBlock Text="{Binding Title}" FontSize="14"/>
@@ -286,8 +281,8 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    
-                                    <TextBlock Text="{Binding IconCode}"
+
+                                    <local:IconControl Icon="{Binding Icon}"
                                            FontFamily="Segoe MDL2 Assets" 
                                            FontSize="20"
                                            VerticalAlignment="Center"
@@ -306,17 +301,14 @@
                                            />
 
 
-                                    <dd:DragHandle Content = "&#xECE9;"
-                                               FontFamily = "Segoe MDL2 Assets"
-                                               Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
-                                               FontSize="16" Margin="5,0,0,0"
-                                               BorderThickness="0"
-                                               Background="Transparent"
-                                               Foreground="LightGray"  
-                                               AllowedDropTargets="Script"
-                                               Cursor="ScrollAll"
-                                               AllowMove="False"
-                                               PreviewElement="{Binding ElementName=Bd}"
+                                    <dd:DragHandle Content = "{x:Static local:Icon.PanMode}"
+                                                   Grid.Column="2" Grid.Row="0" Grid.RowSpan="2"
+                                                   Margin="5,0,0,0" Background="Transparent"
+                                                   Foreground="LightGray"
+                                                   AllowedDropTargets="Script"
+                                                   Cursor="ScrollAll"
+                                                   AllowMove="False"
+                                                   PreviewElement="{Binding ElementName=Bd}"
                                                />
                                 </Grid>
                             </Border>
@@ -331,21 +323,25 @@
                           IsChecked="{Binding IsSimulationMode, Converter={StaticResource InvertConverter}}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Editieren" VerticalAlignment="Center" />
-                    <TextBlock Text="&#xE70F;" Margin="10,0,0,0"
-                               FontFamily="Segoe MDL2 Assets" FontSize="20"
-                               />
+                    <local:IconControl Icon="Edit"
+                                       Margin="10,0,0,0"
+                                       FontSize="20"
+                                       />
                 </StackPanel>
             </ToggleButton>
             <ToggleButton Margin="5" Padding="10,5" 
                           IsChecked="{Binding IsSimulationMode}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Simulation" VerticalAlignment="Center" />
-                    <TextBlock Text="&#xE768;" Margin="10,0,0,0"
-                               FontFamily="Segoe MDL2 Assets" FontSize="20"
-                               />
-                    <TextBlock Text="&#xE769;" Margin="-9,0,0,0"
-                               FontFamily="Segoe MDL2 Assets" FontSize="20"
-                               />
+                    <local:IconControl Icon="Play"
+                                       Margin="10,0,0,0"
+                                       FontSize="20"
+                                       />
+
+                    <local:IconControl Icon="Pause" 
+                                       Margin="-9,0,0,0"
+                                       FontSize="20"
+                                       />
                 </StackPanel>
             </ToggleButton>
         </DockPanel>
