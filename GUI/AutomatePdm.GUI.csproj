@@ -42,6 +42,9 @@
     <Compile Update="Features\ProcessSteps\ChangeState\ChangeStatePipelineStepPopup.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Features\ProcessSteps\GetFileVariables\GetFileVariablesPipelineStepPopup.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>
