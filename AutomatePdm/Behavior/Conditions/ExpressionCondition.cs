@@ -36,7 +36,6 @@ public class ExpressionCondition : ICondition
         return this.Operator switch
         {
             ExpressionOperator.Equal => comparer.Equals(first, second),
-            ExpressionOperator.NotEqual => !comparer.Equals(first, second),
             ExpressionOperator.Contains => first.Contains(second, comparerType),
             ExpressionOperator.EndsWith => first.EndsWith(second, comparerType),
             ExpressionOperator.StartsWith => first.StartsWith(second, comparerType),
@@ -48,7 +47,6 @@ public class ExpressionCondition : ICondition
 public enum ExpressionOperator
 {
     Equal,
-    NotEqual,
     Contains,
     EndsWith,
     StartsWith,

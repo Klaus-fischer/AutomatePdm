@@ -6,7 +6,6 @@ namespace AutomatePdm.GUI;
 
 using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using EPDM.Interop.epdm;
 

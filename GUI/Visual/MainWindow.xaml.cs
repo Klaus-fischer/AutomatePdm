@@ -4,7 +4,6 @@
 
 namespace AutomatePdm.GUI;
 
-using System;
 using System.Windows;
 using AutomatePdm.GUI.DesignTime;
 
