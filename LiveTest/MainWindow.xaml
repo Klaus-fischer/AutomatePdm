@@ -2,8 +2,22 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:AutomatePdm.LiveTest"
-        Title="ExplorerBrowser WPF Demo" Width="1100" Height="720">
+        Title="ExplorerBrowser WPF Demo" 
+        Width="1000" Height="720">
     <Grid>
-        <local:ExplorerBrowserHost InitialDirectory="{Binding InitialDirectory}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <local:ExplorerBrowserHost 
+            Grid.Row="1"
+            Directory="{Binding Directory}" 
+            />
+        <Rectangle Fill="LightGray"/>
+        <DockPanel>
+            <Button Content="&gt;" DockPanel.Dock="Right"/>
+            <TextBox Text="{Binding Directory, UpdateSourceTrigger=LostFocus}"
+                     Margin="2"/>
+        </DockPanel>
     </Grid>
 </Window>

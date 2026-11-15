@@ -18,9 +18,9 @@ public sealed class ExplorerBrowserHost : HwndHost,
     private static readonly Guid ExplorerBrowserClsid =
         new("71F96385-DDD6-48D3-A0C1-AE06E8B055FB");
 
-    public static readonly DependencyProperty InitialDirectoryProperty =
+    public static readonly DependencyProperty DirectoryProperty =
         DependencyProperty.Register(
-            nameof(InitialDirectory),
+            nameof(Directory),
             typeof(string),
             typeof(ExplorerBrowserHost),
             new FrameworkPropertyMetadata(
@@ -32,10 +32,10 @@ public sealed class ExplorerBrowserHost : HwndHost,
     private IExplorerBrowser? _browser;
     private bool _browserInitialized;
 
-    public string? InitialDirectory
+    public string? Directory
     {
-        get => (string?)GetValue(InitialDirectoryProperty);
-        set => SetValue(InitialDirectoryProperty, value);
+        get => (string?)GetValue(DirectoryProperty);
+        set => SetValue(DirectoryProperty, value);
     }
 
     public ExplorerBrowserHost()
@@ -47,7 +47,7 @@ public sealed class ExplorerBrowserHost : HwndHost,
         DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         var control = (ExplorerBrowserHost)d;
-        if (control._browserInitialized && e.NewValue is string path)
+        if (control._browserInitialized && e.NewValue is string path && path != string.Empty)
             control.Navigate(path);
     }
 
@@ -57,12 +57,12 @@ public sealed class ExplorerBrowserHost : HwndHost,
         if (string.IsNullOrWhiteSpace(directory))
             throw new ArgumentException("A directory must be specified.", nameof(directory));
 
-        if (!Directory.Exists(directory))
+        if (!System.IO.Directory.Exists(directory))
             throw new DirectoryNotFoundException($"Directory does not exist: {directory}");
 
         if (!_browserInitialized || _browser is null)
         {
-            InitialDirectory = directory;
+            Directory = directory;
             return;
         }
 
@@ -129,8 +129,8 @@ public sealed class ExplorerBrowserHost : HwndHost,
 
             _browserInitialized = true;
 
-            if (!string.IsNullOrWhiteSpace(InitialDirectory))
-                Navigate(InitialDirectory);
+            if (!string.IsNullOrWhiteSpace(Directory))
+                Navigate(Directory);
 
             return new HandleRef(this, _hostHwnd);
         }

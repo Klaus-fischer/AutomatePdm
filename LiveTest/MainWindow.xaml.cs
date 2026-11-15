@@ -9,7 +9,11 @@ public partial class MainWindow : Window
         InitializeComponent();
 
         // Optional: first command-line argument is the initial directory.
-        string? argument = Environment.GetCommandLineArgs().Skip(1).FirstOrDefault();
-        DataContext = new MainViewModel(argument);
+        string? argument = Environment.GetCommandLineArgs().Skip(1).FirstOrDefault()
+            ?? @"C:\";
+        DataContext = new MainViewModel()
+        {
+            Directory = argument
+        };
     }
 }

@@ -1,17 +1,21 @@
+using System.ComponentModel;
 using System.IO;
 
 namespace AutomatePdm.LiveTest;
 
-public sealed class MainViewModel
+public sealed class MainViewModel : INotifyPropertyChanged
 {
-    public string InitialDirectory { get; }
+    private string directory;
 
-    public MainViewModel(string? directoryArgument)
+    public string Directory
     {
-        var candidate = string.IsNullOrWhiteSpace(directoryArgument)
-            ? Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
-            : directoryArgument.Trim().Trim('"');
-
-        InitialDirectory = Path.GetFullPath(candidate);
+        get => directory;
+        set
+        {
+            directory = value;
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Directory)));
+        }
     }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 }
