@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 18
-VisualStudioVersion = 18.10.12224.181
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37516.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomatePdm", "AutomatePdm\AutomatePdm.csproj", "{DAB4C235-DFF4-4817-92D7-857858804880}"
 EndProject
@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomatePdm.Tests", "Tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomatePdm.GUI", "GUI\AutomatePdm.GUI.csproj", "{D3C5694E-69AA-4C21-9669-5E1ED7D7E46E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomatePdm.LifeTest", "LiveTest\AutomatePdm.LifeTest.csproj", "{D1B1E893-DBDB-245A-84A1-360EF6A005DE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomatePdm.LiveTest", "LiveTest\AutomatePdm.LiveTest.csproj", "{D1B1E893-DBDB-245A-84A1-360EF6A005DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

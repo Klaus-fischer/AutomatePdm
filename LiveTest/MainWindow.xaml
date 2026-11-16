@@ -1,8 +1,12 @@
 <Window x:Class="AutomatePdm.LiveTest.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
         xmlns:local="clr-namespace:AutomatePdm.LiveTest"
         Title="ExplorerBrowser WPF Demo" 
+        d:DataContext="{d:DesignInstance Type=local:MainViewModel}"
         Width="1000" Height="720">
     <Grid>
         <Grid.RowDefinitions>
@@ -15,7 +19,17 @@
             />
         <Rectangle Fill="LightGray"/>
         <DockPanel>
-            <Button Content="&gt;" DockPanel.Dock="Right"/>
+            <Button FontFamily="Segoe MDL2 Assets" 
+                    Command="{Binding NavigateBackCommand}"
+                    Content="&#xE72B;" Margin="2" Width="20"/>
+            <Button FontFamily="Segoe MDL2 Assets"
+                    Command="{Binding NavigateForewardCommand}"
+                    Content="&#xE72A;" Margin="2" Width="20"/>
+            <Button FontFamily="Segoe MDL2 Assets" 
+                    Command="{Binding NavigateUpCommand}"
+                    Content="&#xE70E;" Margin="2" Width="20"/>
+            <Button FontFamily="Segoe MDL2 Assets"
+                    Content="&#xE725;" DockPanel.Dock="Right" Margin="2" Width="20"/>
             <TextBox Text="{Binding Directory, UpdateSourceTrigger=LostFocus}"
                      Margin="2"/>
         </DockPanel>

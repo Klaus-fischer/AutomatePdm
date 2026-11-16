@@ -1,3 +1,4 @@
+using AutomatePdm.LiveTest;
 using System.Runtime.InteropServices;
 
 namespace AutomatePdm.LiveTest;
@@ -14,7 +15,7 @@ internal interface IExplorerBrowser
     void SetPropertyBag([MarshalAs(UnmanagedType.LPWStr)] string propertyBag);
     void SetEmptyText([MarshalAs(UnmanagedType.LPWStr)] string emptyText);
     void SetFolderSettings(ref FOLDERSETTINGS folderSettings);
-    void Advise(IntPtr explorerBrowserEvents, out uint cookie);
+    void Advise(IExplorerBrowserEvents explorerBrowserEvents, out uint cookie);
     void Unadvise(uint cookie);
     void SetOptions(uint flags);
     void GetOptions(out uint flags);

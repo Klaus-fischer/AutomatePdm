@@ -25,24 +25,26 @@ public sealed class ExplorerBrowserHost : HwndHost,
             typeof(ExplorerBrowserHost),
             new FrameworkPropertyMetadata(
                 null,
-                FrameworkPropertyMetadataOptions.None,
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                 OnInitialDirectoryChanged));
 
     private IntPtr _hostHwnd;
     private IExplorerBrowser? _browser;
+    private ExplorerBrowserEvents? _browserEvents;
     private bool _browserInitialized;
-
-    public string? Directory
-    {
-        get => (string?)GetValue(DirectoryProperty);
-        set => SetValue(DirectoryProperty, value);
-    }
 
     public ExplorerBrowserHost()
     {
         Unloaded += OnUnloaded;
     }
 
+
+    public string? Directory
+    {
+        get => (string?)GetValue(DirectoryProperty);
+        set => SetValue(DirectoryProperty, value);
+    }
+  
     private static void OnInitialDirectoryChanged(
         DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -51,11 +53,11 @@ public sealed class ExplorerBrowserHost : HwndHost,
             control.Navigate(path);
     }
 
-    /// <summary>Navigate to a filesystem directory.</summary>
+    /// <summary>Navigate to a filesystem parentDirectory.</summary>
     public void Navigate(string directory)
     {
         if (string.IsNullOrWhiteSpace(directory))
-            throw new ArgumentException("A directory must be specified.", nameof(directory));
+            throw new ArgumentException("A parentDirectory must be specified.", nameof(directory));
 
         if (!System.IO.Directory.Exists(directory))
             throw new DirectoryNotFoundException($"Directory does not exist: {directory}");
@@ -117,6 +119,11 @@ public sealed class ExplorerBrowserHost : HwndHost,
             // Initialize with NULL folder settings, then explicitly apply them.
             _browser.Initialize(_hostHwnd, ref rect, IntPtr.Zero);
 
+            _browserEvents = new ExplorerBrowserEvents();
+            _browser.Advise(_browserEvents, out var cookie);
+            _browserEvents.Cookie = cookie;
+            _browserEvents.FolderChanged += this.OnBrowserFolderChanged;
+
             var settings = new FOLDERSETTINGS
             {
                 ViewMode = 4, // FVM_DETAILS
@@ -144,6 +151,17 @@ public sealed class ExplorerBrowserHost : HwndHost,
             }
             throw;
         }
+    }
+
+
+    private void OnBrowserFolderChanged(string? directory)
+    {
+        if (directory is null)
+        {
+            return;
+        }
+
+        this.Directory = directory;
     }
 
     protected override void OnWindowPositionChanged(Rect rcBoundingBox)
@@ -190,6 +208,7 @@ public sealed class ExplorerBrowserHost : HwndHost,
 
         try
         {
+            _browser.Unadvise(_browserEvents.Cookie);
             ((IObjectWithSite)_browser).SetSite(null);
             _browser.Destroy();
         }
@@ -197,6 +216,7 @@ public sealed class ExplorerBrowserHost : HwndHost,
         {
             _browserInitialized = false;
             Marshal.FinalReleaseComObject(_browser);
+            _browserEvents = null;
             _browser = null;
         }
     }
